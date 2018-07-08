@@ -1,2 +1,7 @@
 # we_e_r_p
-This is a demo project for testing e-r-p
+1. 某波大XX
+2. 这不是一个公益项目
+3. 请不要git clone，坑了不填，谢谢
+4. 真爱生命，请用python
+
+节目的最后由某波献上一首《爱的奉献》
