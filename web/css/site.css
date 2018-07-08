@@ -1,0 +1,201 @@
+html,
+body {
+    height: 100%;
+}
+
+.navbar-header {
+    padding-left: 10px;
+}
+
+#contents {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 40px;
+}
+
+#contents > .p_contents {
+    float: left;
+    width: auto;
+    height: 100%;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.wrap {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.wrap > #w1{
+    height: 50px;
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    border: 0px;
+}
+
+.wrap > #w1 > .container{
+    height: auto;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 50px;
+    margin-bottom: 0px;
+}
+
+.wrap > .container {
+    padding-top: 50px;
+    padding-left: 0px;
+    padding-right: 10px;
+    padding-bottom: 0px;
+    margin: 0px;
+    border: 0px;
+    height: 100%;
+    width: 1920px;
+}
+
+#guide-navigation {
+    float: left;
+    height: 100%;
+    width: 10%;
+    background-color: #1C1C1C;
+    color: #1C1C1C;
+    vertical-align: middle;
+    margin: 0px;
+}
+
+li.list-group-item {
+    height: auto;
+    width: auto;
+    background-color: #1C1C1C;
+    color: #1C1C1C;
+    margin: 0px;
+    padding-left: 10px;
+    padding-top:5px;
+    padding-bottom: 5px;
+    border: 0px;
+}
+
+.list-group-item > .btn {
+    text-align:center;
+    height: auto;
+    width: auto;
+    color: #BCD2EE;
+    background-color: #1C1C1C;
+    margin: 0px;
+    padding-left: 15px;
+    border: 0px;
+}
+
+button.list-group-item {
+    height: auto;
+    width: auto;
+    background-color: #1C1C1C;
+    color: #BCD2EE;
+    margin: 0px;
+    padding-left: 30px;
+    border: 0px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: /*"\e113"*/ "\e151";
+}
+
+a.desc:after {
+    content: /*"\e114"*/ "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.logout {
+    padding: 15px;
+    border: none;
+}
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 15px;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}

@@ -1,0 +1,19 @@
+{
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	],
+    "settings": {
+        "xdebug":
+        {
+            "path_mapping": {
+                "/home/www/basic/views/site" : "E:/work_results/basic/views/site"
+            },
+            "url": "http://192.168.159.132/index.php",
+            "id_key": "eadndfjplgieldjbigjakmdgkmoaaaoc",
+            "close_on_stop": true
+        }
+    }
+}
