@@ -172,6 +172,62 @@ class SiteController extends Controller
     }
 
     /**
+     * 查询订单信息.
+     *
+     * @return string
+     */
+    function actionOrderQuery()
+    {
+        $request = Yii::$app->request;
+        $id = Yii::$app->user->id;
+        $isGuest = Yii::$app->user->isGuest;
+        if ($isGuest) {
+            return '请先登录';
+        }
+        // Ajax请求
+        if ($request->isAjax) {
+            if ($request->isGet) {
+                $query = Yii::$app->db->createCommand("SELECT * from orders order by update_time desc limit 50")->queryAll();
+                $data = $this->renderAjax('order-query', [
+                    'order_info' => $query,
+                ]);
+                return $data;
+            } elseif ($request->isPost) {
+                // 这里添加插入数据库的操作
+                $title = $request->post('title');
+                $customer_id = $request->post('customer_id');
+                $project_id = $request->post('project_id');
+                $order_id = $request->post('order_id');
+                $detail = $request->post('detail');
+                //生成随机id
+                $trade_id = $this->genUniqueTimeId();
+                $start_time = date('Y-m-d h:i:s', time());
+                $status = "订单被创建";
+                $dealer = $id;
+                $handler = $id;
+                Yii::$app->db->createCommand()->insert('trade', [
+                    'trade_id' => $trade_id,
+                    'title' => $title,
+                    'customer_id' => $customer_id,
+                    'project_id' => $project_id,
+                    'order_id' => $order_id,
+                    'dealer' => $dealer,
+                    'handler' => $handler,
+                    'detail' => $detail,
+                    'start_time' => $start_time,
+                    'update_time' => $start_time,
+                    'status' => $status,
+                ])->execute();
+            } else {
+                return '未知的请求类型';
+            }
+        } else {
+            $options = [];
+            return $this->render('welcome');
+        }
+    }
+
+    /**
      * 取得给定日期所在周的开始日期和结束日期
      * @param string $gdate 日期，默认为当天，格式：YYYY-MM-DD
      * @param int $weekStart 一周以星期一还是星期天开始，0为星期天，1为星期一
@@ -261,18 +317,36 @@ class SiteController extends Controller
                 $se_week = $this->getTimeSlot(4);
                 $se_month = $this->getTimeSlot(6);
                 $params = [
+                    ':status' => "已成交",
                     ':begin' => $se_today['beginTime'],
                     ':end' => $se_today['endTime'],
                 ];
-                $new_query = Yii::$app->db->createCommand("SELECT * from orders order by update_time desc limit 50")->queryAll();
-                $week_query = Yii::$app->db->createCommand("SELECT * from orders order by update_time desc limit 50")->queryAll();
-                $month_query = Yii::$app->db->createCommand("SELECT * from orders order by update_time desc limit 50")->queryAll();
+                $sql = "SELECT handler, count(1) cnt, max(update_time) from orders where status = '已成交' and update_time >='" . $se_today['beginTime'] . "' and update_time <= '" . $se_today['endTime'] . "' group by handler order by cnt desc limit 10";
+                $new_query = Yii::$app->db->createCommand($sql)->queryAll();
+                $params = [
+                    ':status' => "已成交",
+                    ':begin' => $se_week['beginTime'],
+                    ':end' => $se_week['endTime'],
+                ];
+                $sql = "SELECT handler, count(1) cnt, max(update_time) from orders where status = '已成交' and update_time >='" . $se_week['beginTime'] . "' and update_time <= '" . $se_week['endTime'] . "' group by handler order by cnt desc limit 10";
+                $week_query = Yii::$app->db->createCommand($sql)->queryAll();
+                $params = [
+                    ':status' => "已成交",
+                    ':begin' => $se_month['beginTime'],
+                    ':end' => $se_month['endTime'],
+                ];
+                $sql = "SELECT handler, count(1) cnt, max(update_time) from orders where status = '已成交' and update_time >='" . $se_month['beginTime'] . "' and update_time <= '" . $se_month['endTime'] . "' group by handler order by cnt desc limit 10";
+                $month_query = Yii::$app->db->createCommand($sql)->queryAll();
                 $data = $this->renderAjax('trade-rank', [
-                    'rank_info' => $query,
+                    'n_rank_info' => $new_query,
+                    'w_rank_info' => $week_query,
+                    'm_rank_info' => $month_query,
+                    'order_info' => array(),
                 ]);
                 return $data;
             } elseif ($request->isPost) {
                 # code...
+                return '请凯波实现';
             } else {
                 return '未知请求类型';
             }

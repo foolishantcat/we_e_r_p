@@ -2,7 +2,7 @@
 * @Author: caoyicheng_cd
 * @Date:   2018-06-11 22:12:38
 * @Last Modified by:   caoyicheng_cd
-* @Last Modified time: 2018-07-07 19:55:53
+* @Last Modified time: 2018-07-09 21:26:46
 */
 
 -------------------权限管理-------------------START
@@ -116,7 +116,7 @@ create table orders(
     good_id         varchar(128)    not null,   -- 商品编号
     good_name       varchar(128)    not null,
     good_count      int(32)         not null,
-    logis_id        int(64)         default null,   -- 物流信息id
+    logis_id        varchar(128)         default null,   -- 物流信息id
     handler         varchar(32)     default '义成',
     start_time      datetime        default NULL,
     update_time     datetime        default NULL,
@@ -125,18 +125,21 @@ create table orders(
     del             int             default 0
 );
 insert into orders values (
-    '1',
+    '9',
     '销售订单',
     '李大爷的订单',
     '1',
-    'caoyicheng',
-    1,
-    1,
-    '买卖田鼠',
-    '义成',
-    '义成',
+    'pingguo',
+    '苹果',
+    100,
+    '圆通2134234',
+    '雪辉',
+    '2018-07-09 10:42:01',
+    '2018-07-09 23:42:01',
     '2018-07-03 21:42:01',
-    NULL, NULL, '', 0);
+    '已成交',
+    0
+);
 
 -- 商品管理(类别)
 create table goods(
