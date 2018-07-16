@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-09 22:33:54
+ * @Last Modified time: 2018-07-10 21:04:42
  */
 ?>
 
@@ -161,6 +161,8 @@
             <th>结束时间</th>
             <th>状态</th>
             <th>删</th>
+            <th>操作</th>
+            <th>处理</th>
         </tr>
         </thead>
         <tbody>
@@ -173,6 +175,25 @@
                 echo $v."<br/>";
                 echo "</td>";
             }
+            // 插入下拉框
+            echo "<td>";
+            echo '
+            <select>
+                <option>确认订单</option>
+                <option>成交订单</option>
+                <option>绑定物流</option>
+                <option>结束订单</option>
+                <option>删除订单</option>
+                <option>订单流程</option>
+            </select>
+            ';
+            echo "</td>";
+            // 插入提交按键
+            echo "<td>";
+            echo '
+            <button type="button" class="btn btn-success" onclick="commit_handle()">提交</button>
+            ';
+            echo "</td>";
             echo "</tr>";
         }
         ?>
