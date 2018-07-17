@@ -4,19 +4,19 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-10 21:04:42
+ * @Last Modified time: 2018-07-17 19:33:12
  */
 ?>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newTradeModal">
+            <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#searchOrder">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 新建订单
             </button>
         </div>
-        <div class="col-md-4">
+        <div id="searchOrder" class="col-md-4 collapse in">
             <!-- 查询交易组框 -->
             <form class="bs-example bs-example-form" role="form">
                 <div class="input-group input-group-sm">

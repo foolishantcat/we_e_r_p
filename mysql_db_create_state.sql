@@ -2,7 +2,7 @@
 * @Author: caoyicheng_cd
 * @Date:   2018-06-11 22:12:38
 * @Last Modified by:   caoyicheng_cd
-* @Last Modified time: 2018-07-16 22:08:34
+* @Last Modified time: 2018-07-17 19:18:31
 */
 
 -------------------权限管理-------------------START
@@ -80,6 +80,8 @@ insert into nav values ('进销存系统', '仓库管理', '领用信息', 'item
 insert into nav values ('进销存系统', '仓库管理', '出入库申请', 'item', 1, 3, 'reper-inout', '正常', 0);
 insert into nav values ('进销存系统', '仓库管理', '退料管理', 'item', 1, 4, 'reper-return', '正常', 0);
 insert into nav values ('进销存系统', '仓库管理', '废料管理', 'item', 1, 5, 'reper-rubbish', '正常', 0);
+
+insert into nav values ('进销存系统', '待办事项', '流程审批', 'item', 1, 0, 'site/flow-approve', '正常', 0);
 
 
 -------以下属于进销存系统-------------
