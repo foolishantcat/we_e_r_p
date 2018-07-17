@@ -97,6 +97,19 @@ class SiteController extends Controller
         );
     }
 
+    //----------测试用-----------------------
+    public function actionOrderInfo()
+    {
+        return $data = $this->renderAjax('order-info');
+    }
+
+    public function actionOrderRank()
+    {
+        return $data = $this->renderAjax('order-rank');
+    }
+    // ------------------测试用-----------------
+
+
     /**
      * Displays homepage.
      *
