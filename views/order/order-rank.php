@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-06 20:09:47
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-17 21:59:39
+ * @Last Modified time: 2018-07-18 21:14:24
  */
 ?>
 <div class="container">
@@ -23,10 +23,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td>1</td>
-                        <td>义成</td>
-                        <td>100笔</td>
-                        <td>2018-07-17 21:00:11</td>
+                        <?php
+                            foreach ($d_order_rank as $row) {
+                                echo "<tr>";
+                                foreach ($row as $k => $v) {
+                                    echo "<td>$v</td>";
+                                }
+                                echo "</tr>";
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -42,10 +47,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td>1</td>
-                        <td>凯波</td>
-                        <td>1000</td>
-                        <td>2018-07-17 21:00:11</td>
+                        <?php
+                            foreach ($w_order_rank as $row) {
+                                echo "<tr>";
+                                foreach ($row as $k => $v) {
+                                    echo "<td>$v</td>";
+                                }
+                                echo "</tr>";
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -61,14 +71,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td>1</td>
-                        <td>凯波</td>
-                        <td>1000</td>
-                        <td>2018-07-17 21:00:11</td>
-                        <td>1</td>
-                        <td>凯波</td>
-                        <td>1000</td>
-                        <td>2018-07-17 21:00:11</td>
+                        <?php
+                            foreach ($m_order_rank as $row) {
+                                echo "<tr>";
+                                foreach ($row as $k => $v) {
+                                    echo "<td>$v</td>";
+                                }
+                                echo "</tr>";
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>

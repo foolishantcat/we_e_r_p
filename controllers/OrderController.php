@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 19:59:03
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 20:42:39
+ * @Last Modified time: 2018-07-18 21:06:18
  */
 
 namespace app\controllers;
@@ -63,7 +63,62 @@ class OrderController extends Controller
 
     public function actionOrderRank()
     {
-        return $data = $this->renderAjax('order-rank');
+        // 最新排名（当日排名）
+        $d_order_rank = [
+            [
+                "rank" => "1",
+                "handler" => "义成",
+                "deal_count" => 1000,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ],
+            [
+                "rank" => "2",
+                "handler" => "凯波",
+                "deal_count" => 900,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ]
+        ];
+        // 本周排名（计算本周、本月日期起止时间的函数，我已经写过了，你可以抄）
+        $w_order_rank = [
+            [
+                "rank" => "1",
+                "handler" => "玉州",
+                "deal_count" => 10000,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ],
+            [
+                "rank" => "2",
+                "handler" => "凯波",
+                "deal_count" => 9000,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ]
+        ];
+        // 本月排名
+        $m_order_rank = [
+            [
+                "rank" => "1",
+                "handler" => "玉州",
+                "deal_count" => 10000,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ],
+            [
+                "rank" => "2",
+                "handler" => "凯波",
+                "deal_count" => 9000,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ],
+            [
+                "rank" => "3",
+                "handler" => "胖大星",
+                "deal_count" => 5000,
+                "nearest_deal_time" => "2018-07-12 10:20:00",
+            ]
+        ];
+        return $data = $this->renderAjax('order-rank', [
+            "d_order_rank" => $d_order_rank,
+            "w_order_rank" => $w_order_rank,
+            "m_order_rank" => $m_order_rank,
+        ]);
     }
     // ------------------测试用-----------------
 }

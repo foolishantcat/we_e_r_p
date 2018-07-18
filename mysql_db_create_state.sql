@@ -2,7 +2,7 @@
 * @Author: caoyicheng_cd
 * @Date:   2018-06-11 22:12:38
 * @Last Modified by:   caoyicheng_cd
-* @Last Modified time: 2018-07-17 19:18:31
+* @Last Modified time: 2018-07-18 21:17:46
 */
 
 -------------------权限管理-------------------START
@@ -68,20 +68,20 @@ insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '
 insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '仓库管理', 'bar', 2);
 insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '待办事项', 'bar', 3);
 
-insert into nav values ('进销存系统', '订单管理', '订单详情', 'item', 1, 0, 'site/order-info','正常', 0);
-insert into nav values ('进销存系统', '订单管理', '销售榜单', 'item', 1, 1, 'site/order-rank','正常', 0);
+insert into nav values ('进销存系统', '订单管理', '订单详情', 'item', 1, 0, 'order/order-info','正常', 0);
+insert into nav values ('进销存系统', '订单管理', '销售榜单', 'item', 1, 1, 'order/order-rank','正常', 0);
 
-insert into nav values ('进销存系统', '采购管理', '商品物料', 'item', 1, 0, 'site/pruch-goods','正常', 0);
-insert into nav values ('进销存系统', '采购管理', '办公设备', 'item', 1, 1, 'site/purch-office', '正常', 0);
+insert into nav values ('进销存系统', '采购管理', '商品物料', 'item', 1, 0, 'purch/pruch-goods','正常', 0);
+insert into nav values ('进销存系统', '采购管理', '办公设备', 'item', 1, 1, 'purch/purch-office', '正常', 0);
 
-insert into nav values ('进销存系统', '仓库管理', '库存信息', 'item', 1, 0, 'reper-stock', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '仓库信息', 'item', 1, 1, 'reper-info', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '领用信息', 'item', 1, 2, 'reper-lend', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '出入库申请', 'item', 1, 3, 'reper-inout', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '退料管理', 'item', 1, 4, 'reper-return', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '废料管理', 'item', 1, 5, 'reper-rubbish', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '库存信息', 'item', 1, 0, 'reper/reper-stock', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '仓库信息', 'item', 1, 1, 'reper/reper-info', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '领用信息', 'item', 1, 2, 'reper/reper-lend', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '出入库申请', 'item', 1, 3, 'reper/reper-inout', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '退料管理', 'item', 1, 4, 'reper/reper-return', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '废料管理', 'item', 1, 5, 'reper/reper-rubbish', '正常', 0);
 
-insert into nav values ('进销存系统', '待办事项', '流程审批', 'item', 1, 0, 'site/flow-approve', '正常', 0);
+insert into nav values ('进销存系统', '待办事项', '流程审批', 'item', 1, 0, 'jxcitem/flow-approve', '正常', 0);
 
 
 -------以下属于进销存系统-------------
