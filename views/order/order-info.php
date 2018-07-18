@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 22:08:56
+ * @Last Modified time: 2018-07-18 22:49:46
  */
 ?>
 
@@ -147,15 +147,16 @@
                         echo "$v" . "";
                         echo "</td>";
                     }
+                    $select_id = "item".$row['order_id'];
                     echo "<td>";
-                    echo "<select>";
+                    echo "<select id='$select_id' class='selectpicker'>";
                     echo "<option>成交订单</option>";
                     echo "<option>订单发货</option>";
                     echo "<option>删除订单</option>";
                     echo "</select>";
                     echo "</td>";
                     echo "<td>";
-                    echo "<button type='button' class='btn btn-success' onclick='commit_handle()'>提交</button>";
+                    echo "<button type='button' class='btn btn-success' onclick='commit_handle($select_id)'>提交</button>";
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -190,9 +191,6 @@
 
 <script>
 var req = new XMLHttpRequest();
-function search_order_info() {
-    alert("点击了搜索交易");
-}
 
 function commit_new_order() {
     //目前只支持index.php
@@ -247,6 +245,32 @@ function search_order(orderId, handler, customerName, goodsId) {
             handler: m_handler,
             customer_name: m_customerName,
             goods_id: m_goodsId,
+        },
+        success: function (data) {
+            alert('[成功]搜索成功: ' + data);
+        },
+        error: function(data) {
+            console.log('Error: ' + data);
+            alert('[失败]搜索失败');
+        }
+    });
+}
+
+function commit_handle(obj) {
+    //目前只支持index.php
+    var r_url = "index.php?r=" + "order/order-info";
+    console.log(r_url);
+    var m_order_id = obj.id.split('item')[1];
+    var m_handle = obj.value;
+    console.log(m_order_id+"|"+m_handle);
+    $.ajax({
+        type: 'POST',
+        url: r_url,
+        dataType: 'HTML',
+        data: {
+            action: 'commit_handle',
+            order_id: m_order_id,
+            handle: m_handle,
         },
         success: function (data) {
             alert('[成功]搜索成功: ' + data);

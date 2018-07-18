@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 19:59:03
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 22:07:48
+ * @Last Modified time: 2018-07-18 22:51:54
  */
 
 namespace app\controllers;
@@ -88,6 +88,12 @@ class OrderController extends Controller
                     $goods_id = $request->post('goods_id');
                     //测试，提供返回数据给前端处理（例如更新界面）
                     $ret = "$order_id"."$handler"."$customer_name"."$goods_id";
+                    return $ret;
+                } elseif ($action === 'commit_handle') {
+                    $order_id = $request->post('order_id');
+                    $handle = $request->post('handle');
+                    // 返回值
+                    $ret = "$order_id"."$handle";
                     return $ret;
                 }
 
