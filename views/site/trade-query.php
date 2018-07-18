@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-01 21:00:59
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-07 19:34:14
+ * @Last Modified time: 2018-07-10 21:05:13
  */
 use yii\widgets\LinkPager;
 ?>
@@ -139,6 +139,8 @@ use yii\widgets\LinkPager;
             <th>结束时间</th>
             <th>状态</th>
             <th>删</th>
+            <th>操作</th>
+            <th>处理</th>
         </tr>
         </thead>
         <tbody>
@@ -151,6 +153,25 @@ use yii\widgets\LinkPager;
                 echo $v."<br/>";
                 echo "</td>";
             }
+            // 插入下拉框
+            echo "<td>";
+            echo '
+            <select>
+                <option>确认交易</option>
+                <option>添加订单</option>
+                <option>完成交易</option>
+                <option>交易失败</option>
+                <option>删除交易</option>
+                <option>交易流程</option>
+            </select>
+            ';
+            echo "</td>";
+            // 插入提交按键
+            echo "<td>";
+            echo '
+            <button type="button" class="btn btn-success" onclick="commit_handle()">提交</button>
+            ';
+            echo "</td>";
             echo "</tr>";
         }
         ?>

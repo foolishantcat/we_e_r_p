@@ -20,9 +20,9 @@ $this->title = '进销存系统';
     ]) ?>
 
     <div id="index-contents" class="p_contents">
-        <?php
-            //echo $this->render('trade-query');
-        ?>
+    <script>
+          $("#page1").load("order/order-info.php");
+    </script>
     </div>
 
 </div>

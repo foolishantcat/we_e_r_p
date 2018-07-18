@@ -2,7 +2,7 @@
 * @Author: caoyicheng_cd
 * @Date:   2018-06-11 22:12:38
 * @Last Modified by:   caoyicheng_cd
-* @Last Modified time: 2018-07-09 21:26:46
+* @Last Modified time: 2018-07-18 21:17:46
 */
 
 -------------------权限管理-------------------START
@@ -23,7 +23,32 @@ create table auth(
     del             int             default 0
 );
 
+-- 审批权限管理，主要是管理审批需要到哪一个级别
+create table approve_auth(
+    approve_auth_id varchar(128)    not null primary key,
+    action          varchar(32)     not null default 'leave', -- 需要审批的项目,如：请假
+    -- 审批需要到的权限
+    -- 1 ： 直属领导
+    -- 2 : 财务审批
+    -- 3 : 高于财务相关权限，低于老板权限
+    -- 4 : 老板审批
+    ap_authcode     int(32)         not null default 1,     -- 需要审批到的最高权限等级
+);
 -------------------权限管理-------------------END
+
+-------------------流程管理-------------------Start
+create table flow(
+    flow_id         varchar(128)    not null primary key,
+    relate_module   varchar(32)     not null default '',    -- 相关的模块，如请假leave
+    relate_id       varchar(128)    not null default '',
+    flow_status     varchar(256)    not null default '', -- 如：发起,**同意，财务同意-->
+    next_handler_id varchar(128)    not null default 'END',
+    next_handler    varchar(32)     not null default '义成',
+    detail          varchar(500)    not null default '',
+    status          varchar(32)     not null default '不同意',
+    del             int             default 0
+);
+-------------------流程管理-------------------End
 
 -- 导航栏设置
 create table nav(
@@ -38,45 +63,26 @@ create table nav(
     del             int             default 0
 );
 
-insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '交易管理', 'bar', 0);
-insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '订单管理', 'bar', 1);
-insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '采购管理', 'bar', 2);
-insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '库存管理', 'bar', 3);
-insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '商品管理', 'bar', 4);
-insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '仓库管理', 'bar', 5);
+insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '订单管理', 'bar', 0);
+insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '采购管理', 'bar', 1);
+insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '仓库管理', 'bar', 2);
+insert into nav(catalog_id, bar_id, level, seq_num) values ('进销存系统', '待办事项', 'bar', 3);
 
-insert into nav values ('进销存系统', '交易管理', '查询交易', 'item', 1, 0, 'site/trade-query', '正常', 0);
-insert into nav values ('进销存系统', '交易管理', '交易分析', 'item', 1, 1, 'site/trade-analysis','正常', 0);
-insert into nav values ('进销存系统', '交易管理', '销售榜单', 'item', 1, 2, 'site/trade-rank','正常', 0);
-insert into nav values ('进销存系统', '交易管理', '交易操作', 'item', 2, 3, 'site/trade-handle','正常', 0);
+insert into nav values ('进销存系统', '订单管理', '订单详情', 'item', 1, 0, 'order/order-info','正常', 0);
+insert into nav values ('进销存系统', '订单管理', '销售榜单', 'item', 1, 1, 'order/order-rank','正常', 0);
 
-insert into nav values ('进销存系统', '订单管理', '查询订单', 'item', 1, 0, 'site/order-query','正常', 0);
-insert into nav values ('进销存系统', '订单管理', '未支付订单', 'item', 1, 1, 'site/order-unpay','正常', 0);
-insert into nav values ('进销存系统', '订单管理', '待发货订单', 'item', 1, 2, 'site/order-unsend','正常', 0);
-insert into nav values ('进销存系统', '订单管理', '物流追踪', 'item', 1, 3, 'site/order-logistics', '正常', 0);
-insert into nav values ('进销存系统', '订单管理', '订单操作', 'item', 2, 4, 'site/order-mgr', '正常', 0);
+insert into nav values ('进销存系统', '采购管理', '商品物料', 'item', 1, 0, 'purch/pruch-goods','正常', 0);
+insert into nav values ('进销存系统', '采购管理', '办公设备', 'item', 1, 1, 'purch/purch-office', '正常', 0);
 
-insert into nav values ('进销存系统', '采购管理', '礼品采购', 'item', 1, 0, 'site/purch-gift','正常', 0);
-insert into nav values ('进销存系统', '采购管理', '办公采购', 'item', 1, 1, 'site/purch-office', '正常', 0);
-insert into nav values ('进销存系统', '采购管理', '商品采购', 'item', 1, 2, 'site/purch-goods', '正常', 0);
-insert into nav values ('进销存系统', '采购管理', '采购操作', 'item', 1, 3, 'site/purch-handle', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '库存信息', 'item', 1, 0, 'reper/reper-stock', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '仓库信息', 'item', 1, 1, 'reper/reper-info', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '领用信息', 'item', 1, 2, 'reper/reper-lend', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '出入库申请', 'item', 1, 3, 'reper/reper-inout', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '退料管理', 'item', 1, 4, 'reper/reper-return', '正常', 0);
+insert into nav values ('进销存系统', '仓库管理', '废料管理', 'item', 1, 5, 'reper/reper-rubbish', '正常', 0);
 
-insert into nav values ('进销存系统', '库存管理', '查询库存', 'item', 1, 0, 'supply-query','正常', 0);
-insert into nav values ('进销存系统', '库存管理', '领用申请', 'item', 1, 1, 'supply-borrow', '正常', 0);
-insert into nav values ('进销存系统', '库存管理', '申请入库', 'item', 1, 2, 'supply-store', '正常', 0);
-insert into nav values ('进销存系统', '库存管理', '申请出库', 'item', 1, 3, 'supply-fetch', '正常', 0);
-insert into nav values ('进销存系统', '库存管理', '库存操作', 'item', 2, 4, 'supply-handle', '正常', 0);
+insert into nav values ('进销存系统', '待办事项', '流程审批', 'item', 1, 0, 'jxcitem/flow-approve', '正常', 0);
 
-insert into nav values ('进销存系统', '商品管理', '查询商品', 'item', 1, 0, 'goods-query', '正常', 0);
-insert into nav values ('进销存系统', '商品管理', '商品操作', 'item', 2, 1, 'goods-handle','正常', 0);
-
-insert into nav values ('进销存系统', '仓库管理', '仓库信息', 'item', 1, 0, 'repertory-info', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '申请仓库', 'item', 1, 1, 'repertory-ask', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '废料管理', 'item', 1, 2, 'repertory-rubbish', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '退料管理', 'item', 1, 3, 'repertory-return', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '物流配送', 'item', 1, 4, 'repertory-logistics', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '检验管理', 'item', 1, 5, 'repertory-qa', '正常', 0);
-insert into nav values ('进销存系统', '仓库管理', '仓库整理', 'item', 2, 6, 'repertory-clean', '正常', 0);
 
 -------以下属于进销存系统-------------
 -- 交易管理Trade management
@@ -116,7 +122,8 @@ create table orders(
     good_id         varchar(128)    not null,   -- 商品编号
     good_name       varchar(128)    not null,
     good_count      int(32)         not null,
-    logis_id        varchar(128)         default null,   -- 物流信息id
+    amountofmoney   DECIMAL(9,2)    not null default 0.00,  -- 订单金额
+    logis_id        varchar(128)    default null,   -- 物流信息id
     handler         varchar(32)     default '义成',
     start_time      datetime        default NULL,
     update_time     datetime        default NULL,
@@ -125,19 +132,20 @@ create table orders(
     del             int             default 0
 );
 insert into orders values (
-    '9',
-    '销售订单',
-    '李大爷的订单',
+    '2',
+    '采购订单',
+    '王大爷的订单',
     '1',
     'pingguo',
-    '苹果',
-    100,
+    '铅笔',
+    200,
+    1024.0,
     '圆通2134234',
     '雪辉',
     '2018-07-09 10:42:01',
     '2018-07-09 23:42:01',
     '2018-07-03 21:42:01',
-    '已成交',
+    '未成交',
     0
 );
 
@@ -155,18 +163,44 @@ create table goods(
     del             int             default 0
 );
 
+insert into goods values(
+    'B456',
+    '铅笔',
+    '文具',
+    '日本进口',
+    '已上架',
+    '义成',
+    '2018-07-11 11:00:01',
+    '2018-07-11 11:00:01',
+    '正常',
+    0
+);
+
 -- 采购管理
 create table purchase(
     purch_id        varchar(128)    not null primary key,
     title           varchar(64)     default '',
-    order_id        int(64)         default NULL,   -- 采购订单
-    manager         varchar(32)     default '义成',
-    handler         varchar(32)     default '义成',
+    order_id        varchar(128)    default NULL,   -- 采购订单
+    staff_id        varchar(128)    default '',     -- 员工编号
+    handler         varchar(32)     default '义成', -- 员工名字
     start_time      datetime        default NULL,
     update_time     datetime        default NULL,
     end_time        datetime        default NULL,
-    status          datetime        default NULL,
+    status          varchar(32)     default '',
     del             int             default 0
+);
+
+insert into purchase values (
+    'P123',
+    '销售部采购计划',
+    '2',
+    'C123',
+    '义成',
+    '2018-07-11 12:00:01',
+    '2018-07-11 12:00:01',
+    '2018-07-11 12:00:01',
+    '正常',
+    0
 );
 
 -- 库存管理Supply management
@@ -412,38 +446,55 @@ create table cash(
     del             int             default 0
 );
 -- 应收款管理
-create table receivable(
-    receivable_id   varchar(128)    not null primary key,
-    manager         varchar(32)     not null default 'ethan',
+create table toreceive(
+    receive_id      varchar(128)    not null primary key,
+    type            varchar(32)     not null default '', -- 订金，尾款，租金，违约金
+    title           varchar(64)     not null default '',
+    detail          varchar(256)    not null default '',
+    proposer        varchar(32)     not null default '义成',  -- 发起人，申请人
+    handler         varchar(32)     not null default '义成',
     amountofmoney   DECIMAL(9,2)    not null default 0.00,
     isdelay         int             default 0,
     reason          varchar(1000)   default '',
     deadline        datetime        default NULL,
-    status          varchar(32)     default '',
+    status          varchar(32)     default '未收款',
     del             int             default 0
 );
 -- 应付款管理
-create table payable(
-    receivable_id   varchar(128)    not null primary key,
-    manager         varchar(32)     not null default 'ethan',
+create table topay(
+    pay_id          varchar(128)    not null primary key,
+    type            varchar(32)     not null default '', -- 采购，物流，工资，报销，租金，广告
+    title           varchar(64)     not null default '',
+    detail          varchar(256)    not null default '',
+    proposer        varchar(32)     not null default '义成',  -- 发起人，申请人
+    handler         varchar(32)     not null default '义成',
     amountofmoney   DECIMAL(9,2)    not null default 0.00,
     isdelay         int             default 0,
     reason          varchar(1000)   default '',
     deadline        datetime        default NULL,
-    status          varchar(32)     default '',
+    status          varchar(32)     default '未付款',
     del             int             default 0
 );
 -- 薪资管理
 create table salary(
-    staff_id        varchar(128)    not null primary key,
+    salary_id       varchar(128)    not null primary key,
+    type            varchar(32)     not null default '工资', -- 工资，绩效奖金，年终奖金
+    staff_id        varchar(128)    not null,
     name_ch         varchar(64)     not null,
     age             int             not null,
     amountofmoney   DECIMAL(9,2)    not null default 0.00,
     salary_day      datetime        default NULL,
     work_time       float           default 0.0,    -- 一个月考勤工作时间
     unit_price      DECIMAL(9,2)    not null default 0.00, -- 时薪
+    month_price     DECIMAL(9,2)    not null default 0.00, -- 月薪
+    bonus           DECIMAL(9,2)    not null default 0.00, -- 奖金
     status          varchar(32)     default '',
     del             int             default 0
+);
+-- 绩效管理
+create table performance(
+    perform_id      varchar(128)    not null primary key,
+    staff_id        varchar(128)    not null default '',
 );
 -- 报销管理
 create table claim(
@@ -480,6 +531,8 @@ create table staff(
     education       varchar(64)     not null,
     role            varchar(32)     not null default 'staff',   -- 员工角色
     authcode        int(32)         not null default 1, -- 授权码
+    higher_ups_id   varchar(128)    not null default '',    -- 上级ID
+    higher_ups      varchar(32)     not null default '',    -- 上级名字
     entry_time      datetime        default NULL,
     update_date     datetime        default NULL,
     status          varchar(32)     not null default '活跃用户',
@@ -492,7 +545,7 @@ create table trip(
     reason          varchar(1000)   not null,   -- 出差原因
     start_address   varchar(32)     not null,
     dest_address    varchar(32)     not null,
-    duration        float           not null default 1, -- 出差时长
+    duration        DECIMAL(9,1)    not null default 1.0, -- 出差时长
     budget          DECIMAL(9,2)    not null default 0.00, -- 预算差旅补贴
     budget_detail   varchar(1000)   not null,  -- 详细差旅补贴说明
     status          varchar(32)     not null,

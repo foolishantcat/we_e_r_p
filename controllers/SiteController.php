@@ -68,14 +68,6 @@ class SiteController extends Controller
         }
     }
 
-    /*
-     * Add By caoyicheng
-     */
-    public function actionSay($message = 'Hellow')
-    {
-        return $this->render('say', ['message' => $message]);
-    }
-
     /**
      * Displays homepage.
      *
@@ -205,6 +197,62 @@ class SiteController extends Controller
         if ($request->isAjax) {
             if ($request->isGet) {
                 $query = Yii::$app->db->createCommand("SELECT * from orders order by update_time desc limit 50")->queryAll();
+                $data = $this->renderAjax('order-query', [
+                    'order_info' => $query,
+                ]);
+                return $data;
+            } elseif ($request->isPost) {
+                // 这里添加插入数据库的操作
+                $title = $request->post('title');
+                $customer_id = $request->post('customer_id');
+                $project_id = $request->post('project_id');
+                $order_id = $request->post('order_id');
+                $detail = $request->post('detail');
+                //生成随机id
+                $trade_id = $this->genUniqueTimeId();
+                $start_time = date('Y-m-d h:i:s', time());
+                $status = "订单被创建";
+                $dealer = $id;
+                $handler = $id;
+                Yii::$app->db->createCommand()->insert('trade', [
+                    'trade_id' => $trade_id,
+                    'title' => $title,
+                    'customer_id' => $customer_id,
+                    'project_id' => $project_id,
+                    'order_id' => $order_id,
+                    'dealer' => $dealer,
+                    'handler' => $handler,
+                    'detail' => $detail,
+                    'start_time' => $start_time,
+                    'update_time' => $start_time,
+                    'status' => $status,
+                ])->execute();
+            } else {
+                return '未知的请求类型';
+            }
+        } else {
+            $options = [];
+            return $this->render('welcome');
+        }
+    }
+
+    /**
+     * 新增、查询采购订单.
+     *
+     * @return string
+     */
+    function actionPurchGoods()
+    {
+        $request = Yii::$app->request;
+        $id = Yii::$app->user->id;
+        $isGuest = Yii::$app->user->isGuest;
+        if ($isGuest) {
+            return '请先登录';
+        }
+        // Ajax请求
+        if ($request->isAjax) {
+            if ($request->isGet) {
+                $query = Yii::$app->db->createCommand("SELECT * from purchase order by update_time desc limit 50")->queryAll();
                 $data = $this->renderAjax('order-query', [
                     'order_info' => $query,
                 ]);
