@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 19:59:03
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 21:46:14
+ * @Last Modified time: 2018-07-18 22:07:48
  */
 
 namespace app\controllers;
@@ -69,16 +69,28 @@ class OrderController extends Controller
                         "order_info" => $order_info,
                     ]);
             } elseif ($request->isPost) {
-                // 新建订单上传的数据
-                $title = $request->post('title');
-                $customer_name = $request->post('customer_name');
-                $goods_id = $request->post('goods_id');
-                $goods_name = $request->post('goods_name');
-                $goods_count = $request->post('goods_count');
-                $logid_info = $request->post('logid_info');
-                $ret = "$title"."$customer_name"."$goods_id"."$goods_name"."$goods_name"."$goods_count"."$logid_info";
-                //此处返回一个字符串给前端（测试用,后期可删）
-                return $ret;
+                // 订单详情界面上传的数据
+                $action = $request->post('action');
+                if ($action === 'new_order') {  // 新建订单动作
+                    $title = $request->post('title');
+                    $customer_name = $request->post('customer_name');
+                    $goods_id = $request->post('goods_id');
+                    $goods_name = $request->post('goods_name');
+                    $goods_count = $request->post('goods_count');
+                    $logid_info = $request->post('logid_info');
+                    $ret = "$title"."$customer_name"."$goods_id"."$goods_name"."$goods_name"."$goods_count"."$logid_info";
+                    //此处返回一个字符串给前端（测试用,后期可删）
+                    return $ret;
+                } elseif ($action === 'search_order') { // 搜索订单提交
+                    $order_id = $request->post('order_id');
+                    $handler = $request->post('handler');
+                    $customer_name = $request->post('customer_name');
+                    $goods_id = $request->post('goods_id');
+                    //测试，提供返回数据给前端处理（例如更新界面）
+                    $ret = "$order_id"."$handler"."$customer_name"."$goods_id";
+                    return $ret;
+                }
+
             } else {
                 return '未知的请求类型';
             }

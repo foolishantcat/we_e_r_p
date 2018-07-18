@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 21:43:05
+ * @Last Modified time: 2018-07-18 22:08:56
  */
 ?>
 
@@ -90,25 +90,25 @@
         </div>
         <div id="searchOrder" class="col-md-4 collapse" >
             <!-- 查询交易组框 -->
-            <form class="bs-example bs-example-form" role="form">
+            <form id="formSearch" class="bs-example bs-example-form" role="form">
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">订单编号</span>
-                    <input type="text" class="form-control" placeholder="twitterhandle">
+                    <input id="orderId" type="text" class="form-control" placeholder="填写订单编号">
                 </div>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">交易员</span>
-                    <input type="text" class="form-control">
+                    <input id="handler" type="text" class="form-control">
                 </div>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">客户姓名</span>
-                    <input type="text" class="form-control" placeholder="twitterhandle">
+                    <input id="customerName" type="text" class="form-control" placeholder="twitterhandle">
                 </div>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">商品ID</span>
-                    <input type="text" class="form-control">
+                    <input id="goodsId" type="text" class="form-control">
                 </div>
                 <div>
-                    <button id="btSearchOrder" class="btn btn-success" type="button" onclick="search_order()">
+                    <button id="btSearchOrder" class="btn btn-success" type="button" onclick="search_order(formSearch.orderId, formSearch.handler, formSearch.customerName,formSearch.goodsId)">
                         搜一下
                     </button>
                 </div>
@@ -210,6 +210,7 @@ function commit_new_order() {
         url: r_url,
         dataType: 'HTML',
         data: {
+            action: 'new_order',
             title: title,
             customer_name: customer_name,
             goods_id: goods_id,
@@ -223,6 +224,36 @@ function commit_new_order() {
         error: function(data) {
             console.log('Error: ' + data);
             alert('[失败]新增交易');
+        }
+    });
+}
+
+function search_order(orderId, handler, customerName, goodsId) {
+    //目前只支持index.php
+    var r_url = "index.php?r=" + "order/order-info";
+    console.log(r_url);
+    var m_orderId = orderId.value;
+    var m_handler = handler.value;
+    var m_customerName = customerName.value;
+    var m_goodsId = goodsId.value;
+    console.log(m_orderId+"|"+m_handler+"|"+m_customerName+"|"+m_goodsId);
+    $.ajax({
+        type: 'POST',
+        url: r_url,
+        dataType: 'HTML',
+        data: {
+            action: 'search_order',
+            order_id: m_orderId,
+            handler: m_handler,
+            customer_name: m_customerName,
+            goods_id: m_goodsId,
+        },
+        success: function (data) {
+            alert('[成功]搜索成功: ' + data);
+        },
+        error: function(data) {
+            console.log('Error: ' + data);
+            alert('[失败]搜索失败');
         }
     });
 }
