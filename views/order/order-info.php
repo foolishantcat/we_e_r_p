@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 20:48:27
+ * @Last Modified time: 2018-07-18 21:43:05
  */
 ?>
 
@@ -36,16 +36,16 @@
                         <div class="alert alert-primary" role="alert">
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label for="orderName" class="col-sm-2 control-label">标题*</label>
+                                    <label for="orderTitle" class="col-sm-2 control-label">标题*</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="orderName"
+                                        <input type="text" class="form-control" id="orderTitle"
                                            placeholder="请输入客户ID">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="orderName" class="col-sm-2 control-label">客户姓名*</label>
+                                    <label for="customerName" class="col-sm-2 control-label">客户姓名*</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="orderName"
+                                        <input type="text" class="form-control" id="customerName"
                                            placeholder="请输入客户姓名">
                                     </div>
                                 </div>
@@ -71,9 +71,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="goodsCount" class="col-sm-2 control-label">物流信息</label>
+                                    <label for="logisInfo" class="col-sm-2 control-label">物流信息</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsCount"
+                                        <input type="text" class="form-control" id="logisInfo"
                                            placeholder="请输入物流地址信息">
                                     </div>
                                 </div>
@@ -196,27 +196,29 @@ function search_order_info() {
 
 function commit_new_order() {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "site/trade-query";
+    var r_url = "index.php?r=" + "order/order-info";
     console.log(r_url);
-    var title = document.getElementById('tradeTitle').value;
-    var customer_id = document.getElementById('customerId').value;
-    var project_id = document.getElementById('projectId').value;
-    var order_id = document.getElementById('orderId').value;
-    var detail = document.getElementById('tradeDetail').value;
-    console.log(title+"|"+customer_id+"|"+project_id+"|"+order_id+"|"+detail);
+    var title = document.getElementById('orderTitle').value;
+    var customer_name = document.getElementById('customerName').value;
+    var goods_id = document.getElementById('goodsId').value;
+    var goods_name = document.getElementById('goodsName').value;
+    var goods_count = document.getElementById('goodsCount').value;
+    var logis_info = document.getElementById('logisInfo').value;
+    console.log(title+"|"+customer_name+"|"+goods_id+"|"+goods_name+"|"+goods_count+"|"+logis_info);
     $.ajax({
         type: 'POST',
         url: r_url,
         dataType: 'HTML',
         data: {
             title: title,
-            customer_id: customer_id,
-            project_id: project_id,
-            order_id: order_id,
-            detail: detail,
+            customer_name: customer_name,
+            goods_id: goods_id,
+            goods_name: goods_name,
+            goods_count: goods_count,
+            logis_info: logis_info,
         },
         success: function (data) {
-            alert('[成功]新增交易');
+            alert('[成功]新增交易: ' + data);
         },
         error: function(data) {
             console.log('Error: ' + data);
