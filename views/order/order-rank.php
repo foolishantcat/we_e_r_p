@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-06 20:09:47
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-17 21:41:04
+ * @Last Modified time: 2018-07-17 21:59:39
  */
 ?>
 <div class="container">
@@ -119,7 +119,7 @@
             <td>2018-07-22 10::55:00</td>
         </tbody>
     </table>
-    <ul class="pagination pagination-sm">
+    <ul class="pagination pagination-sm" style="position:relative;float: center;">
         <li>
              <a href="#">Prev</a>
         </li>

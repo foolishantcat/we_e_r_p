@@ -69,14 +69,6 @@ class SiteController extends Controller
         }
     }
 
-    /*
-     * Add By caoyicheng
-     */
-    public function actionSay($message = 'Hellow')
-    {
-        return $this->render('say', ['message' => $message]);
-    }
-
     /**
      * Displays homepage.
      *
@@ -96,19 +88,6 @@ class SiteController extends Controller
             ]
         );
     }
-
-    //----------测试用-----------------------
-    public function actionOrderInfo()
-    {
-        return $data = $this->renderAjax('order-info');
-    }
-
-    public function actionOrderRank()
-    {
-        return $data = $this->renderAjax('order-rank');
-    }
-    // ------------------测试用-----------------
-
 
     /**
      * Displays homepage.

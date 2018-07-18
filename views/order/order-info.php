@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-17 21:43:48
+ * @Last Modified time: 2018-07-18 20:48:27
  */
 ?>
 
@@ -122,7 +122,7 @@
         <tr>
             <th>编号</th>
             <th>类型</th>
-            <th>名称</th>
+            <th>标题</th>
             <th>客户ID</th>
             <th>商品ID</th>
             <th>商品名称</th>
@@ -139,30 +139,27 @@
         </thead>
         <tbody>
         <tr>
-            <td>1</td>
-            <td>销售订单</td>
-            <td>巨凯波的订单</td>
-            <td>B123</td>
-            <td>S345</td>
-            <td>苹果</td>
-            <td>100</td>
-            <td>广东省广州市</td>
-            <td>义成</td>
-            <td>2018-07-12 10:20:00</td>
-            <td>2018-07-12 10:20:00</td>
-            <td>2018-07-12 10:20:00</td>
-            <td>状态</td>
-            <td>操作</td>
-            <td>
-                <select>
-                    <option>成交订单</option>
-                    <option>订单发货</option>
-                    <option>删除订单</option>
-                </select>
-            </td>
-            <td>
-                <button type="button" class="btn btn-success" onclick="commit_handle()">提交</button>
-            </td>
+            <?php
+                foreach ($order_info as $row) {
+                    echo "<tr>";
+                    foreach($row as $k => $v) {
+                        echo "<td>";
+                        echo "$v" . "";
+                        echo "</td>";
+                    }
+                    echo "<td>";
+                    echo "<select>";
+                    echo "<option>成交订单</option>";
+                    echo "<option>订单发货</option>";
+                    echo "<option>删除订单</option>";
+                    echo "</select>";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<button type='button' class='btn btn-success' onclick='commit_handle()'>提交</button>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+            ?>
         </tr>
         </tbody>
     </table>

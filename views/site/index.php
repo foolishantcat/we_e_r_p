@@ -21,7 +21,7 @@ $this->title = '进销存系统';
 
     <div id="index-contents" class="p_contents">
     <script>
-          $("#page1").load("site/order_info.php");
+          $("#page1").load("order/order-info.php");
     </script>
     </div>
 
