@@ -2,16 +2,15 @@
 
 namespace app\controllers;
 
+use app\service\trade\TradeService;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\CrmForm;
 use app\models\EntryForm;
-use yii\data\Pagination;
-use yii\db\Query;
 
 class SiteController extends Controller
 {
@@ -97,21 +96,11 @@ class SiteController extends Controller
         );
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function genUniqueTimeId()
-    {
-        $str_id = date('Ymd') . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
-        return $str_id;
-    }
 
     public function genUniqueSha1Id()
     {
         $data = $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']
-        .time() . rand();
+            . time() . rand();
         return sha1($data);
     }
 
@@ -123,17 +112,30 @@ class SiteController extends Controller
     public function actionTradeQuery()
     {
         $request = Yii::$app->request;
-        $id = Yii::$app->user->id;
+        $accessID = Yii::$app->user->id;
         $isGuest = Yii::$app->user->isGuest;
         if ($isGuest) {
             return '请先登录';
         }
+        $service = new TradeService();
         // Ajax请求
         if ($request->isAjax) {
             if ($request->isGet) {
-                $query = Yii::$app->db->createCommand("SELECT * from trade order by update_time desc limit 50")->queryAll();
+                $page = $this->R('page');
+                $rows = $this->R('rows');
+                if (!$page) {
+                    $page = 1;
+                }
+                if (!$rows) {
+                    $rows = 50;
+                }
+                $input = [
+                    'page' => $page,
+                    'rows' => $rows
+                ];
+                $tradeData = $service->getTrade($input);
                 $data = $this->renderAjax('trade-query', [
-                    'trade_info' => $query,
+                    'trade_info' => $tradeData,
                 ]);
                 return $data;
             } elseif ($request->isPost) {
@@ -143,14 +145,12 @@ class SiteController extends Controller
                 $project_id = $request->post('project_id');
                 $order_id = $request->post('order_id');
                 $detail = $request->post('detail');
-                //生成随机id
-                $trade_id = $this->genUniqueTimeId();
+
                 $start_time = date('Y-m-d h:i:s', time());
-                $status = "订单被创建";
-                $dealer = $id;
-                $handler = $id;
-                Yii::$app->db->createCommand()->insert('trade', [
-                    'trade_id' => $trade_id,
+
+                $dealer = $accessID;
+                $handler = $accessID;
+                $data = $service->addTrade([
                     'title' => $title,
                     'customer_id' => $customer_id,
                     'project_id' => $project_id,
@@ -160,8 +160,25 @@ class SiteController extends Controller
                     'detail' => $detail,
                     'start_time' => $start_time,
                     'update_time' => $start_time,
-                    'status' => $status,
-                ])->execute();
+                ]);
+                $page = $this->R('page');
+                $rows = $this->R('rows');
+                if (!$page) {
+                    $page = 1;
+                }
+                if (!$rows) {
+                    $rows = 50;
+                }
+                $input = [
+                    'page' => $page,
+                    'rows' => $rows
+                ];
+                $tradeData = $service->getTrade($input);
+                $data = $this->renderAjax('trade-query', [
+                    'trade_info' => $tradeData,
+                ]);
+                return $data;
+//                return Json::encode($data);
             } else {
                 return '未知的请求类型';
             }
@@ -233,8 +250,9 @@ class SiteController extends Controller
      * @param int $weekStart 一周以星期一还是星期天开始，0为星期天，1为星期一
      * @return array 数组array( "开始日期 ",  "结束日期");
      */
-    function getAWeekTimeSlot($gdate = '', $weekStart = 1) {
-        if (! $gdate){
+    function getAWeekTimeSlot($gdate = '', $weekStart = 1)
+    {
+        if (!$gdate) {
             $gdate = date("Y-m-d");
         }
         $w = date("w", strtotime($gdate)); //取得一周的第几天,星期天开始0-6
@@ -280,14 +298,14 @@ class SiteController extends Controller
             $endTime = date('Y-m-d 23:39:59', mktime(0, 0, 0, date('m', $now), date('t', $now), date('Y', $now)));
         } elseif ($q === 7) {// 三月内
             $time = strtotime('-2 month', $now);
-            $beginTime = date('Y-m-d 00:00:00', mktime(0, 0,0, date('m', $time), 1, date('Y', $time)));
+            $beginTime = date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m', $time), 1, date('Y', $time)));
             $endTime = date('Y-m-d 23:39:59', mktime(0, 0, 0, date('m', $now), date('t', $now), date('Y', $now)));
         } elseif ($q === 8) {// 半年内
             $time = strtotime('-5 month', $now);
-            $beginTime = date('Y-m-d 00:00:00', mktime(0, 0,0, date('m', $time), 1, date('Y', $time)));
+            $beginTime = date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m', $time), 1, date('Y', $time)));
             $endTime = date('Y-m-d 23:39:59', mktime(0, 0, 0, date('m', $now), date('t', $now), date('Y', $now)));
-        }  elseif ($q === 9) {// 一年内
-            $beginTime = date('Y-m-d 00:00:00', mktime(0, 0,0, 1, 1, date('Y', $now)));
+        } elseif ($q === 9) {// 一年内
+            $beginTime = date('Y-m-d 00:00:00', mktime(0, 0, 0, 1, 1, date('Y', $now)));
             $endTime = date('Y-m-d 23:39:59', mktime(0, 0, 0, 12, 31, date('Y', $now)));
         } elseif ($q === 10) {// 三年内
             $time = strtotime('-2 year', $now);

@@ -423,6 +423,11 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
         return $this->_validators;
     }
 
+    public function initFields($input)
+    {
+
+    }
+
     /**
      * Returns the validators applicable to the current [[scenario]].
      * @param string $attribute the name of the attribute whose applicable validators should be returned.
@@ -455,7 +460,7 @@ class Model extends Component implements StaticInstanceInterface, IteratorAggreg
             if ($rule instanceof Validator) {
                 $validators->append($rule);
             } elseif (is_array($rule) && isset($rule[0], $rule[1])) { // attributes, validator type
-                $validator = Validator::createValidator($rule[1], $this, (array) $rule[0], array_slice($rule, 2));
+                $validator = Validator::createValidator($rule[1], $this, (array)$rule[0], array_slice($rule, 2));
                 $validators->append($validator);
             } else {
                 throw new InvalidConfigException('Invalid validation rule: a rule must specify both attribute names and validator type.');

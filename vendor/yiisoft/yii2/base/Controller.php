@@ -113,6 +113,25 @@ class Controller extends Component implements ViewContextInterface
     }
 
     /**
+     * get request params
+     * @param null $key
+     * @return array
+     */
+    public function R($key = null)
+    {
+        $inputGet = Yii::$app->request->get();
+        $inputPost = Yii::$app->request->post();
+        $inputData = array_merge($inputGet, $inputPost);
+        if (isset($inputData[$key])) {
+            return $inputData[$key];
+        } elseif ($key) {
+            return '';
+        } else {
+            return $inputData;
+        }
+    }
+
+    /**
      * Runs an action within this controller with the specified action ID and parameters.
      * If the action ID is empty, the method will use [[defaultAction]].
      * @param string $id the ID of the action to be executed.
