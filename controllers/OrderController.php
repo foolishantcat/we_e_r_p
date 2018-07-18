@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 19:59:03
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 22:51:54
+ * @Last Modified time: 2018-07-18 22:57:38
  */
 
 namespace app\controllers;
@@ -41,6 +41,7 @@ class OrderController extends Controller
                         "title" => "巨凯波的苹果订单",
                         "customer_id" => "B123",
                         "good_id" => "PG124",
+                        "good_name" => "红富士",
                         "good_count" => 100,
                         "logid_info" => "广东省广州市天河区",
                         "handler" => "义成",
@@ -55,6 +56,7 @@ class OrderController extends Controller
                         "title" => "曹义成的香蕉订单",
                         "customer_id" => "B456",
                         "good_id" => "XJ234",
+                        "good_name" => "日本大香蕉",
                         "good_count" => 1000,
                         "logid_info" => "广东省广州市增城区",
                         "handler" => "凯波",
