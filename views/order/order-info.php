@@ -4,11 +4,11 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 22:49:46
+ * @Last Modified time: 2018-07-19 19:44:40
  */
 ?>
 
-<div id="contentOrder" class="container" stype="margin-left:0px; margin-right:0px;">
+<div id="contentOrder" class="container" style="width: 100%;">
     <h2>订单详情<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h2>
     <div class="row">
         <div class="col-md-12">

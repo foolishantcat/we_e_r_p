@@ -4,10 +4,10 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-06 20:09:47
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 21:14:24
+ * @Last Modified time: 2018-07-19 19:41:49
  */
 ?>
-<div class="container">
+<div class="container" style="width: 100%;">
     <div class="row col-md-12">
         <h2>销售榜单<span class="glyphicon glyphicon-fire" aria-hidden="true"></h2>
         <div class="row clearfix">
