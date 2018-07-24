@@ -2,13 +2,13 @@
 * @Author: caoyicheng_cd
 * @Date:   2018-06-11 22:12:38
 * @Last Modified by:   caoyicheng_cd
-* @Last Modified time: 2018-07-18 21:17:46
+* @Last Modified time: 2018-07-24 19:09:43
 */
 
 -------------------权限管理-------------------START
 create table auth(
     auth_id         varchar(128)    not null primary key,
-    -- 当前权限分为5个等级:
+    --  当前权限分为5个等级:
     -- 1 : 普通权限，所有员工所有
     -- 2 : 普通管理权限（业务层）
     -- 3 : 财务相关管理权限
