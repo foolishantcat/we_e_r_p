@@ -17,7 +17,7 @@ class TradeService
         $tradeDao = new TradeDao();
         $offset = ($input['page'] - 1) * $input['rows'];
         $tradeData = $tradeDao->find()->where([])->select(['*'])->orderBy(['update_time' => SORT_DESC])->limit($input['rows'])->offset($offset)->all();
-        return $tradeData;
+        return ['code' => 0, 'data' => $tradeData];
     }
 
     /**
@@ -40,6 +40,5 @@ class TradeService
             \Yii::info('add trade error.', __FUNCTION__);
             return ['code' => -1, 'msg' => 'add trade error.'];
         }
-
     }
 }

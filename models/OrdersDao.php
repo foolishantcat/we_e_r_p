@@ -7,22 +7,21 @@ use Yii;
 /**
  * This is the model class for table "orders".
  *
- * @property string $id ID
- * @property string $order_id 订单ID
- * @property string $type 订单类型
- * @property string $title 订单标题
- * @property string $customer_id
- * @property string $good_id 商品ID
- * @property string $good_name 商品名
- * @property int $good_count 订单商品数量
- * @property int $logis_id
- * @property int $hander_user_id 订单所属人ID
- * @property string $handler 订单所属人
- * @property string $start_time 开始时间
- * @property string $end_time 结束时间
- * @property string $status
- * @property string $update_time 更新时间
- * @property int $del 删除标记
+ * @property string $order_id 订单编号（大写字符串+日期数字）
+ * @property string $type 订单类型，如采购，销售
+ * @property string $title 订单标题，如：某人的某些订单（只能由数字、字母、汉字组成）
+ * @property string $customer_id 客户id，为customer表的外键
+ * @property string $good_id 商品id，为goods表外键
+ * @property string $good_name 商品名称（只能由数字、字母、汉字组成）
+ * @property int $good_count 商品数量，单位“件”
+ * @property string $amountofmoney 订单总金额
+ * @property string $logis_id 货运单号，为logistic表外键
+ * @property string $handler 最后操作人
+ * @property string $start_time 订单开始时间
+ * @property string $end_time 订单结束时间
+ * @property string $status 订单当前状态
+ * @property int $del 是否删除订单
+ * @property string $update_time 订单最后更新时间
  */
 class OrdersDao extends \yii\db\ActiveRecord
 {
@@ -40,13 +39,12 @@ class OrdersDao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customer_id', 'logis_id'], 'required'],
-            [['good_count', 'logis_id', 'hander_user_id', 'del'], 'integer'],
+            [['good_count', 'del'], 'integer'],
+            [['amountofmoney'], 'number'],
             [['start_time', 'end_time', 'update_time'], 'safe'],
-            [['order_id', 'customer_id', 'good_id', 'good_name'], 'string', 'max' => 128],
             [['type', 'handler', 'status'], 'string', 'max' => 32],
             [['title'], 'string', 'max' => 64],
-            [['order_id'], 'unique'],
+            [['customer_id', 'good_id', 'good_name', 'logis_id'], 'string', 'max' => 128],
         ];
     }
 
@@ -56,7 +54,6 @@ class OrdersDao extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'order_id' => 'Order ID',
             'type' => 'Type',
             'title' => 'Title',
@@ -64,14 +61,14 @@ class OrdersDao extends \yii\db\ActiveRecord
             'good_id' => 'Good ID',
             'good_name' => 'Good Name',
             'good_count' => 'Good Count',
+            'amountofmoney' => 'Amountofmoney',
             'logis_id' => 'Logis ID',
-            'hander_user_id' => 'Hander User ID',
             'handler' => 'Handler',
             'start_time' => 'Start Time',
             'end_time' => 'End Time',
             'status' => 'Status',
-            'update_time' => 'Update Time',
             'del' => 'Del',
+            'update_time' => 'Update Time',
         ];
     }
 }

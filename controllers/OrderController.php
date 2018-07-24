@@ -9,6 +9,7 @@
 
 namespace app\controllers;
 
+use app\service\order\OrderService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -31,71 +32,52 @@ class OrderController extends Controller
         if ($isGuest) {
             return '请先登录';
         }
-        if ($request->isAjax || 1) {
+        $orderService = new OrderService();
+        if ($request->isAjax) {
             // 用于测试显示界面(这里需要修改)
-            if ($request->isGet || 1) {
-                $order_info = [
-                    [
-                        "order_id" => "1",
-                        "type" => "销售订单",
-                        "title" => "巨凯波的苹果订单",
-                        "customer_id" => "B123",
-                        "good_id" => "PG124",
-                        "good_name" => "红富士",
-                        "good_count" => 100,
-                        "logid_info" => "广东省广州市天河区",
-                        "handler" => "义成",
-                        "start_time" => "2018-07-12 10:20:00",
-                        "update_time" => "2018-07-12 10:20:00",
-                        "end_time" => "2018-07-12 10:20:00",
-                        "status" => "已成交",
-                    ],
-                    [
-                        "order_id" => "2",
-                        "type" => "销售订单",
-                        "title" => "曹义成的香蕉订单",
-                        "customer_id" => "B456",
-                        "good_id" => "XJ234",
-                        "good_name" => "日本大香蕉",
-                        "good_count" => 1000,
-                        "logid_info" => "广东省广州市增城区",
-                        "handler" => "凯波",
-                        "start_time" => "2018-07-12 10:20:00",
-                        "update_time" => "2018-07-12 10:20:00",
-                        "end_time" => "2018-07-12 10:20:00",
-                        "status" => "退货中",
-                    ],
+            if ($request->isGet) {
+                $page = $this->R('page');
+                $rows = $this->R('rows');
+                if (!$page) {
+                    $page = 1;
+                }
+                if (!$rows) {
+                    $rows = 50;
+                }
+                $input = [
+                    'page' => $page,
+                    'rows' => $rows
                 ];
+                $order_info = $orderService->getOrdersInfo($input);
                 return $data = $this->renderAjax('order-info',
                     [
-                        "order_info" => $order_info,
+                        "order_info" => $order_info['data'],
                     ]);
             } elseif ($request->isPost) {
                 // 订单详情界面上传的数据
                 $action = $request->post('action');
                 if ($action === 'new_order') {  // 新建订单动作
-                    $title = $request->post('title');
-                    $customer_name = $request->post('customer_name');
-                    $goods_id = $request->post('goods_id');
-                    $goods_name = $request->post('goods_name');
-                    $goods_count = $request->post('goods_count');
-                    $logid_info = $request->post('logid_info');
-                    $ret = "$title"."$customer_name"."$goods_id"."$goods_name"."$goods_name"."$goods_count"."$logid_info";
+                    $input = $this->R();
+                    $res = $orderService->addOrders($input);
                     //此处返回一个字符串给前端（测试用,后期可删）
-                    return $ret;
+                    return $res;
                 } elseif ($action === 'search_order') { // 搜索订单提交
-                    $order_id = $request->post('order_id');
-                    $handler = $request->post('handler');
-                    $customer_name = $request->post('customer_name');
-                    $goods_id = $request->post('goods_id');
+
                     //测试，提供返回数据给前端处理（例如更新界面）
-                    $ret = "$order_id"."$handler"."$customer_name"."$goods_id";
-                    return $ret;
+                    $input = $this->R();
+                    if (!$this->R('page')) {
+                        $input['page'] = 1;
+                    }
+                    if (!$this->R('rows')) {
+                        $input['rows'] = 50;
+                    }
+                    $order_info = $orderService->getOrdersInfo($input);
+                    return $order_info;
                 } elseif ($action === 'commit_handle') {
                     $order_id = $request->post('order_id');
                     $handle = $request->post('handle');
                     // 返回值
-                    $ret = "$order_id"."$handle";
+                    $ret = "$order_id" . "$handle";
                     return $ret;
                 }
 
