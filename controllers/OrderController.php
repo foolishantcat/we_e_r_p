@@ -31,9 +31,9 @@ class OrderController extends Controller
         if ($isGuest) {
             return '请先登录';
         }
-        if ($request->isAjax) {
+        if ($request->isAjax || 1) {
             // 用于测试显示界面(这里需要修改)
-            if ($request->isGet) {
+            if ($request->isGet || 1) {
                 $order_info = [
                     [
                         "order_id" => "1",

@@ -123,33 +123,31 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `orders` (
-  `order_id` varchar(128) NOT NULL,
-  `type` varchar(32) NOT NULL,
-  `title` varchar(64) DEFAULT '',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `order_id` varchar(128) NOT NULL DEFAULT '' COMMENT '订单ID',
+  `type` varchar(32) NOT NULL DEFAULT '' COMMENT '订单类型',
+  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '订单标题',
   `customer_id` varchar(128) NOT NULL,
-  `good_id` varchar(128) NOT NULL,
-  `good_name` varchar(128) NOT NULL,
-  `good_count` int(32) NOT NULL,
-  `logis_id` varchar(128) DEFAULT NULL,
-  `handler` varchar(32) DEFAULT '义成',
-  `start_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `end_time` datetime DEFAULT NULL,
-  `status` varchar(32) DEFAULT '',
-  `del` int(11) DEFAULT '0',
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `good_id` varchar(128) NOT NULL DEFAULT '' COMMENT '商品ID',
+  `good_name` varchar(128) NOT NULL DEFAULT '' COMMENT '商品名',
+  `good_count` int(11) NOT NULL DEFAULT '0' COMMENT '订单商品数量',
+  `logis_id` int(11) NOT NULL,
+  `hander_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '订单所属人ID',
+  `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '订单所属人',
+  `start_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '开始时间',
+  `end_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '结束时间',
+  `status` varchar(32) NOT NULL DEFAULT '',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `del` int(11) NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单基础表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `orders`
 --
 
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES ('1','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','义成','2018-07-09 21:42:01','2018-07-09 21:42:01','2018-07-03 21:42:01','已成交',0),('2','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','义成','2018-07-09 21:42:01','2018-07-09 21:42:01','2018-07-03 21:42:01','已成交',0),('3','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','义成','2018-07-09 21:42:01','2018-07-09 21:42:01','2018-07-03 21:42:01','已成交',0),('4','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','雪辉','2018-07-09 10:42:01','2018-07-09 10:42:01','2018-07-03 21:42:01','已成交',0),('5','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','雪辉','2018-07-09 10:42:01','2018-07-09 10:42:01','2018-07-03 21:42:01','已成交',0),('6','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','雪辉','2018-07-09 10:42:01','2018-07-09 10:42:01','2018-07-03 21:42:01','已成交',0),('7','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','雪辉','2018-07-09 10:42:01','2018-07-09 10:42:01','2018-07-03 21:42:01','已成交',0),('8','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','雪辉','2018-07-09 10:42:01','2018-07-09 22:42:01','2018-07-03 21:42:01','已成交',0),('9','销售订单','李大爷的订单','1','pingguo','苹果',100,'圆通2134234','雪辉','2018-07-09 10:42:01','2018-07-09 23:42:01','2018-07-03 21:42:01','已成交',0);
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `trade`
@@ -159,32 +157,29 @@ DROP TABLE IF EXISTS `trade`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `trade` (
-  `trade_id` varchar(128) NOT NULL,
-  `title` varchar(64) DEFAULT '',
-  `customer_id` varchar(128) DEFAULT NULL,
-  `project_id` int(64) DEFAULT NULL,
-  `order_id` int(64) DEFAULT NULL,
-  `detail` varchar(1000) DEFAULT '',
-  `dealer` varchar(32) DEFAULT '义成',
-  `handler` varchar(32) DEFAULT '义成',
-  `start_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
-  `end_time` datetime DEFAULT NULL,
-  `status` varchar(32) DEFAULT '',
-  `del` int(11) DEFAULT '0',
-  PRIMARY KEY (`trade_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `trade_id` varchar(128) NOT NULL DEFAULT '' COMMENT '交易编号',
+  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '交易名称',
+  `customer_id` varchar(128) NOT NULL DEFAULT '' COMMENT '顾客ID',
+  `project_id` int(64) NOT NULL DEFAULT '0' COMMENT '项目ID',
+  `order_id` int(64) NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `detail` varchar(255) NOT NULL DEFAULT '' COMMENT '详细信息',
+  `dealer` varchar(32) NOT NULL DEFAULT '' COMMENT '跟单员',
+  `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '操作员',
+  `start_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '开始时间',
+  `end_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '订单完成时间',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
+  `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否被删除',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='【交易】交易明细记录表';
+
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `trade`
 --
-
-LOCK TABLES `trade` WRITE;
-/*!40000 ALTER TABLE `trade` DISABLE KEYS */;
-INSERT INTO `trade` VALUES ('2018070706698',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 10:36:56','2018-07-07 10:36:56',NULL,'订单被创建',0),('2018070707450',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:27:17','2018-07-07 11:27:17',NULL,'订单被创建',0),('2018070723253',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:16:36','2018-07-07 11:16:36',NULL,'订单被创建',0),('2018070723516',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:19:47','2018-07-07 11:19:47',NULL,'订单被创建',0),('2018070727988','买卖红薯','李逵',0,0,'第一笔生意','100','100','2018-07-07 11:43:05','2018-07-07 11:43:05',NULL,'订单被创建',0),('2018070733216',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 10:33:18','2018-07-07 10:33:18',NULL,'订单被创建',0),('2018070738419',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 10:46:49','2018-07-07 10:46:49',NULL,'订单被创建',0),('2018070747964',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:19:28','2018-07-07 11:19:28',NULL,'订单被创建',0),('2018070756867',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:26:02','2018-07-07 11:26:02',NULL,'订单被创建',0),('2018070767613',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 10:52:29','2018-07-07 10:52:29',NULL,'订单被创建',0),('2018070779188','3333','333',3333,0,'哈哈啊','义成','义成','2018-07-07 11:37:01','2018-07-07 11:37:01',NULL,'订单被创建',0),('2018070780571',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:14:40','2018-07-07 11:14:40',NULL,'订单被创建',0),('2018070787510',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 11:21:22','2018-07-07 11:21:22',NULL,'订单被创建',0),('2018070789183',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 10:28:05','2018-07-07 10:28:05',NULL,'订单被创建',0),('2018070793709',NULL,NULL,NULL,NULL,NULL,'义成','义成','2018-07-07 10:31:26','2018-07-07 10:31:26',NULL,'订单被创建',0);
-/*!40000 ALTER TABLE `trade` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

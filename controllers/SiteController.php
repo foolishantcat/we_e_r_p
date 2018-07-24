@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
+use app\service\nav\NavService;
 use app\service\trade\TradeService;
 use Yii;
 use yii\filters\AccessControl;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -76,15 +76,11 @@ class SiteController extends Controller
     public function actionIndex()
     {
         // 从数据库读取导航栏数据
-        $bars = Yii::$app->db->createCommand("SELECT * from nav where catalog_id = '进销存系统' and level = 'bar' order by seq_num")->queryAll();
-        $items = Yii::$app->db->createCommand("SELECT * from nav where catalog_id = '进销存系统' and level = 'item'")->queryAll();
+        $pageData = (new NavService())->getNavInfo();
         // 这里最好处理一下导航栏数据，再传入渲染，这样子速度更快
         return $this->render(
             'index',
-            [
-                'bars' => $bars,
-                'items' => $items
-            ]
+            $pageData
         );
     }
 
@@ -132,11 +128,11 @@ class SiteController extends Controller
                 return $data;
             } elseif ($request->isPost) {
                 // 这里添加插入数据库的操作
-                $title = $request->post('title');
-                $customer_id = $request->post('customer_id');
-                $project_id = $request->post('project_id');
-                $order_id = $request->post('order_id');
-                $detail = $request->post('detail');
+                $title = $this->R('title');
+                $customer_id = $this->R('customer_id');
+                $project_id = $this->R('project_id');
+                $order_id = $this->R('order_id');
+                $detail = $this->R('detail');
 
                 $start_time = date('Y-m-d h:i:s', time());
 
@@ -153,24 +149,10 @@ class SiteController extends Controller
                     'start_time' => $start_time,
                     'update_time' => $start_time,
                 ]);
-                $page = $this->R('page');
-                $rows = $this->R('rows');
-                if (!$page) {
-                    $page = 1;
-                }
-                if (!$rows) {
-                    $rows = 50;
-                }
-                $input = [
-                    'page' => $page,
-                    'rows' => $rows
-                ];
-                $tradeData = $service->getTrade($input);
                 $data = $this->renderAjax('trade-query', [
-                    'trade_info' => $tradeData,
+                    'data' => $data,
                 ]);
                 return $data;
-//                return Json::encode($data);
             } else {
                 return '未知的请求类型';
             }
