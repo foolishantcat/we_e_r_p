@@ -9,8 +9,8 @@ $this->title = '进销存系统';
 ?>
 
 <div id="contents" class="container" style="width: 100%; height: 100%;">
-    <div class="row" style="width: 100%; height: 100%;">
-        <div class="p_navs col-md-1 column">
+    <div id= "p_row" class="row">
+        <div id="p_navs" class="col-md-2 column">
             <?= SideNavWidget::widget([
                 'id'=>'index-nav',
                 'options' => [
@@ -21,7 +21,7 @@ $this->title = '进销存系统';
                 ],
             ]) ?>
         </div>
-        <div id="index-contents" class="p_contents col-md-11 column pre-scrollable">
+        <div id="p_contents" class="col-md-10 column">
             空页面
         </div>
     </div>

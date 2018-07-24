@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-19 19:44:40
+ * @Last Modified time: 2018-07-24 17:26:39
  */
 ?>
 
@@ -117,7 +117,7 @@
     </div>
 
     <!-- 展示信息用的表格 -->
-    <table class="table table-striped">
+    <table class="table table-bordered table-striped" style="width: 100%;">
         <thead>
         <tr>
             <th>编号</th>

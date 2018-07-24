@@ -96,7 +96,7 @@ function refresh_contents(obj) {
         url: r_url,
         dataType: 'HTML',
         success: function (data) {
-            $(".p_contents").html(data);
+            $("#p_contents").html(data);
         },
         error: function(data) {
             console.log('Error: ' + data);
