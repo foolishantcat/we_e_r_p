@@ -58,6 +58,7 @@ class OrderController extends Controller
                 $action = $request->post('action');
                 if ($action === 'new_order') {  // 新建订单动作
                     $input = $this->R();
+                    Yii::$app->response->format = Response::FORMAT_JSON;
                     $res = $orderService->addOrders($input);
                     //此处返回一个字符串给前端（测试用,后期可删）
                     return $res;
@@ -71,6 +72,7 @@ class OrderController extends Controller
                     if (!$this->R('rows')) {
                         $input['rows'] = 50;
                     }
+                    Yii::$app->response->format = Response::FORMAT_JSON;
                     $order_info = $orderService->getOrdersInfo($input);
                     return $order_info;
                 } elseif ($action === 'commit_handle') {

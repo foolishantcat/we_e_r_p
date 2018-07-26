@@ -20,16 +20,16 @@ class OrderService
         if ($input['order_id']) {
             $condition['order_id'] = $input['order_id'];
         }
-        if ($input['handler']) {
+        if (isset($input['handler']) && $input['handler']) {
             $condition['handler'] = $input['handler'];
         }
-        if ($input['customer_name']) {
+        if (isset($input['customer_name']) && $input['customer_name']) {
             $condition['customer_name'] = $input['customer_name'];
         }
-        if ($input['goods_id']) {
+        if (isset($input['goods_id']) && $input['goods_id']) {
             $condition['goods_id'] = $input['goods_id'];
         }
-        $out = $orderDao->find()->where($condition)->orderBy(['update_time' => SORT_DESC])->limit($input['rows'])->offset($offset)->all();
+        $out = $orderDao->find()->where($condition)->orderBy(['update_time' => SORT_DESC])->limit($input['rows'])->offset($offset)->asArray()->all();
         return ['code' => 0, 'data' => $out];
     }
 
