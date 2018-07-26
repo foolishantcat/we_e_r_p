@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 21:38:22
+ * @Last Modified time: 2018-07-26 21:44:57
  */
 ?>
 
@@ -288,7 +288,7 @@ function search_order(orderId, handler, customerName, goodsId) {
                 "<td>" + t_end_time + "</td>" +
                 "<td>" + t_status + "</td>" +
                 "<td>" +
-                    "<select id='$select_id' class='selectpicker'>" +
+                    "<select id='" + select_id + "' class='selectpicker'>" +
                         "<option>成交订单</option>" +
                         "<option>订单发货</option>" +
                         "<option>删除订单</option>" +
