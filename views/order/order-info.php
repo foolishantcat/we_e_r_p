@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 19:20:00
+ * @Last Modified time: 2018-07-26 21:38:22
  */
 ?>
 
@@ -117,7 +117,7 @@
     </div>
 
     <!-- 展示信息用的表格 -->
-    <table class="table table-bordered table-striped" style="width: 100%;">
+    <table id="orderTable" class="table table-bordered table-striped" style="width: 100%;">
         <thead>
         <tr>
             <th>编号</th>
@@ -249,6 +249,57 @@ function search_order(orderId, handler, customerName, goodsId) {
         },
         success: function (data) {
             alert('[成功]搜索成功: ' + data);
+            // 解析json，然后替换前端
+            var jsonObj = JSON.parse(data);
+            var tableData = jsonObj.data;
+            $("#orderTable tr:gt(0)").remove();//第一行是table的表格头不需清除
+            var html = '';
+            for(var i=0; i < tableData.length; i++){
+                var row = tableData[i];
+                var t_order_id = row.order_id;
+                var t_type = row.type;
+                var t_title = row.title;
+                var t_customer_id = row.customer_id;
+                var t_good_id = row.good_id;
+                var t_good_name = row.good_name;
+                var t_good_count = row.good_count;
+                var t_amountofmoney = row.amountofmoney;
+                var t_logis_id = row.logis_id;
+                var t_handler = row.handler;
+                var t_start_time = row.start_time;
+                var t_update_time = row.update_time;
+                var t_end_time = row.end_time;
+                var t_status = row.status;
+                // 根据order_id 获取 select_id
+                var select_id = "item" + t_order_id;
+                html += "<tr>" +
+                "<td>" + t_order_id + "</td>" +
+                "<td>" + t_type + "</td>" +
+                "<td>" + t_title + "</td>" +
+                "<td>" + t_customer_id + "</td>" +
+                "<td>" + t_good_id + "</td>" +
+                "<td>" + t_good_name + "</td>" +
+                "<td>" + t_good_count + "</td>" +
+                "<td>" + t_amountofmoney + "</td>" +
+                "<td>" + t_logis_id + "</td>" +
+                "<td>" + t_handler + "</td>" +
+                "<td>" + t_start_time + "</td>" +
+                "<td>" + t_update_time + "</td>" +
+                "<td>" + t_end_time + "</td>" +
+                "<td>" + t_status + "</td>" +
+                "<td>" +
+                    "<select id='$select_id' class='selectpicker'>" +
+                        "<option>成交订单</option>" +
+                        "<option>订单发货</option>" +
+                        "<option>删除订单</option>" +
+                    "</select>" +
+                "</td>" +
+                "<td>" +
+                    "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
+                "</td>" +
+                "</tr>";
+            }
+            $("#orderTable").append(html);//将新数据填充到table
         },
         error: function(data) {
             console.log('Error: ' + data);
