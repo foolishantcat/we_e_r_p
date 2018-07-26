@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 20:10:54
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 20:18:05
+ * @Last Modified time: 2018-07-26 22:03:17
  */
 
 namespace app\controllers;
@@ -23,12 +23,12 @@ use yii\db\Query;
 class PurchController extends Controller
 {
     //----------测试用-----------------------
-    public function actionOrderInfo()
+    public function actionPurchGoods()
     {
         return $data = $this->renderAjax('order-info');
     }
 
-    public function actionOrderRank()
+    public function actionPurchOffice()
     {
         return $data = $this->renderAjax('order-rank');
     }
