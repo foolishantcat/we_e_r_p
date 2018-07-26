@@ -2,33 +2,32 @@
 
 /**
  * @Author: caoyicheng_cd
- * @Date:   2018-07-09 21:37:09
+ * @Date:   2018-07-26 15:14:32
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 19:20:00
+ * @Last Modified time: 2018-07-26 15:18:11
  */
 ?>
-
-<div id="contentOrder" class="container" style="width: 100%;">
-    <h2>订单详情<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h2>
+<div id="contentPurch" class="container" style="width: 100%;">
+    <h2>办公设备<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h2>
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newOrder">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newOffice">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                新建订单
+                新建办公设备
             </button>
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#searchOrder">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#searchOffice">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                搜索订单
+                搜索办公设备
             </button>
         </div>
 
         <!-- 新建交易模态框 -->
-        <div class="modal fade" id="newOrder">
+        <div class="modal fade" id="newOffice">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- 模态框头部 -->
                     <div class="modal-header">
-                        <h4 class="modal-title">新建订单</h4>
+                        <h4 class="modal-title">新建办公设备</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <!-- 模态框主体 -->
@@ -36,45 +35,31 @@
                         <div class="alert alert-primary" role="alert">
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label for="orderTitle" class="col-sm-2 control-label">标题*</label>
+                                    <label for="orderTitle" class="col-sm-2 control-label">商品名称*</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="orderTitle"
                                            placeholder="请输入客户ID">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="customerName" class="col-sm-2 control-label">客户姓名*</label>
+                                    <label for="customerName" class="col-sm-2 control-label">类别*</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="customerName"
                                            placeholder="请输入客户姓名">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="goodsId" class="col-sm-2 control-label">商品ID*</label>
+                                    <label for="goodsId" class="col-sm-2 control-label">状态*</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="goodsId"
                                            placeholder="请输入商品ID">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="goodsName" class="col-sm-2 control-label">商品名称*</label>
+                                    <label for="goodsName" class="col-sm-2 control-label">详细信息</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="goodsName"
-                                           placeholder="请输入商品名称">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="goodsCount" class="col-sm-2 control-label">商品数量</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsCount"
-                                           placeholder="请输入项目ID">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="logisInfo" class="col-sm-2 control-label">物流信息</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="logisInfo"
-                                           placeholder="请输入物流地址信息">
+                                           placeholder="请输入商品详细描述信息">
                                     </div>
                                 </div>
                             </form>
@@ -83,32 +68,47 @@
                     <!-- 模态框底部 -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="commit_new_order()">提交订单</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="commit_new_goods()">提交</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="searchOrder" class="col-md-4 collapse" >
+        <div id="searchGoods" class="col-md-4 collapse" >
             <!-- 查询交易组框 -->
             <form id="formSearch" class="bs-example bs-example-form" role="form">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">订单编号</span>
-                    <input id="orderId" type="text" class="form-control" placeholder="填写订单编号">
-                </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">交易员</span>
-                    <input id="handler" type="text" class="form-control">
-                </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">客户姓名</span>
-                    <input id="customerName" type="text" class="form-control" placeholder="twitterhandle">
-                </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">商品ID</span>
+                    <span class="input-group-addon">商品编号</span>
                     <input id="goodsId" type="text" class="form-control">
                 </div>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">商品名称</span>
+                    <input id="goodsName" type="text" class="form-control">
+                </div>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">类别</span>
+                    <!-- 这里需要从后台获取数据,类别 -->
+                    <select id='selectGoodsType' class='selectpicker'>
+                        <option>水果</option>
+                        <option>文具</option>
+                        <option>电脑耗材</option>
+                        <option>海鲜</option>
+                    </select>
+                </div>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">状态</span>
+                    <!-- 这里需要从后台获取数据,状态 -->
+                    <select id='selectStatus' class='selectpicker'>
+                        <option>售卖中</option>
+                        <option>已下架</option>
+                        <option>未上架</option>
+                    </select>
+                </div>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">操作员</span>
+                    <input id="handler" type="text" class="form-control">
+                </div>
                 <div>
-                    <button id="btSearchOrder" class="btn btn-success" type="button" onclick="search_order(formSearch.orderId, formSearch.handler, formSearch.customerName,formSearch.goodsId)">
+                    <button id="btSearchGoods" class="btn btn-success" type="button" onclick="search_order(formSearch.goodsId, formSearch.goodsName, formSearch.customerName,formSearch.goodsId)">
                         搜一下
                     </button>
                 </div>
@@ -127,7 +127,6 @@
             <th>商品ID</th>
             <th>商品名称</th>
             <th>商品数量</th>
-            <th>金额</th>
             <th>物流信息</th>
             <th>跟单员</th>
             <th>开始时间</th>
@@ -193,9 +192,9 @@
 <script>
 var req = new XMLHttpRequest();
 
-function commit_new_order() {
+function commit_new_goods() {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "order/order-info";
+    var r_url = "index.php?r=" + "purch/purch-goods";
     console.log(r_url);
     var title = document.getElementById('orderTitle').value;
     var customer_name = document.getElementById('customerName').value;
@@ -227,9 +226,9 @@ function commit_new_order() {
     });
 }
 
-function search_order(orderId, handler, customerName, goodsId) {
+function search_goods(orderId, handler, customerName, goodsId) {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "order/order-info";
+    var r_url = "index.php?r=" + "purch/purch-goods";
     console.log(r_url);
     var m_orderId = orderId.value;
     var m_handler = handler.value;
@@ -259,7 +258,7 @@ function search_order(orderId, handler, customerName, goodsId) {
 
 function commit_handle(obj) {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "order/order-info";
+    var r_url = "index.php?r=" + "purch/purch-goods";
     console.log(r_url);
     var m_order_id = obj.id.split('item')[1];
     var m_handle = obj.value;

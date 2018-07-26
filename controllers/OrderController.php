@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 19:59:03
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 22:57:38
+ * @Last Modified time: 2018-07-26 21:14:46
  */
 
 namespace app\controllers;
@@ -81,8 +81,9 @@ class OrderController extends Controller
                     // 返回值
                     $ret = "$order_id" . "$handle";
                     return $ret;
+                } else {
+                    return '未知的请求动作';
                 }
-
             } else {
                 return '未知的请求类型';
             }
@@ -95,6 +96,13 @@ class OrderController extends Controller
 
     public function actionOrderRank()
     {
+        $request = Yii::$app->request;
+        $id = Yii::$app->user->id;
+        $isGuest = Yii::$app->user->isGuest;
+        if ($isGuest) {
+            return '请先登录';
+        }
+        // ============此处是测试数据，请用实际数据替换-================
         // 最新排名（当日排名）
         $d_order_rank = [
             [
@@ -146,11 +154,92 @@ class OrderController extends Controller
                 "nearest_deal_time" => "2018-07-12 10:20:00",
             ]
         ];
-        return $data = $this->renderAjax('order-rank', [
-            "d_order_rank" => $d_order_rank,
-            "w_order_rank" => $w_order_rank,
-            "m_order_rank" => $m_order_rank,
-        ]);
+        // 用于展示的默认排名信息 (默认显示当日销量第一的员工的全部排名信息)
+        $kaibo_rank_info = [
+            [
+                "area" => "当日",
+                "rank" => "1",
+                "staff_name" => "凯波",
+                "deal_count" => 100,
+                "deal_money" => "1000", //此处以人民币元作为基本单位
+                "last_deal_time" => "2018-01-27 00:00:00",
+            ],
+            [
+                "area" => "本周",
+                "rank" => "3",
+                "staff_name" => "凯波",
+                "deal_count" => 1000,
+                "deal_money" => "5000", //此处以人民币元作为基本单位
+                "last_deal_time" => "2018-01-27 00:00:00",
+            ],
+            [
+                "area" => "本月",
+                "rank" => "3",
+                "staff_name" => "凯波",
+                "deal_count" => 10000,
+                "deal_money" => "150000", //此处以人民币元作为基本单位
+                "last_deal_time" => "2018-01-27 00:00:00",
+            ],
+        ];
+        $test_rank_info = [
+            [
+                "area" => "当日",
+                "rank" => "1",
+                "staff_name" => "测试搜索号",
+                "deal_count" => 100,
+                "deal_money" => "1000", //此处以人民币元作为基本单位
+                "last_deal_time" => "2018-01-27 00:00:00",
+            ],
+            [
+                "area" => "本周",
+                "rank" => "3",
+                "staff_name" => "测试搜索号",
+                "deal_count" => 1000,
+                "deal_money" => "5000", //此处以人民币元作为基本单位
+                "last_deal_time" => "2018-01-27 00:00:00",
+            ],
+            [
+                "area" => "本月",
+                "rank" => "3",
+                "staff_name" => "测试搜索号",
+                "deal_count" => 10000,
+                "deal_money" => "150000", //此处以人民币元作为基本单位
+                "last_deal_time" => "2018-01-27 00:00:00",
+            ],
+        ];
+        // =============================================================
+        if ($request->isAjax) {
+            // 用于测试显示界面(这里需要修改)
+            if ($request->isGet) {
+                return $data = $this->renderAjax('order-rank', [
+                    "d_order_rank" => $d_order_rank,
+                    "w_order_rank" => $w_order_rank,
+                    "m_order_rank" => $m_order_rank,
+                    "rank_info" => $kaibo_rank_info,
+                ]);
+            } elseif ($request->isPost) {
+                $action = $request->post('action');
+                if ($action === 'search_rank') {
+                    $area = $request->post('area');
+                    $staff_name = $request->post('staff_name');
+                    $staff_id = $request->post('staff_id');
+                    // 这里需要根据传入的条件进行数据库查询和筛选 (待修改)
+                    // 最后返回的结果如下所示
+                    $pageData = [
+                        'code' => 0,
+                        'data' => $test_rank_info,
+                    ];
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return $pageData;
+                } else {
+                    return '未知的请求动作';
+                }
+            } else {
+                return '未知的请求类型';
+            }
+        } else {
+            $options = [];
+            return $this->render('welcome');
+        }
     }
-    // ------------------测试用-----------------
 }
