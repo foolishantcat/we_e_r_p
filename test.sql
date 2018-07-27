@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : loc
-Source Server Version : 50718
-Source Host           : 192.168.8.128:3306
-Source Database       : we_erp
+Source Server         : ethan_mysql
+Source Server Version : 50722
+Source Host           : 192.168.159.132:3306
+Source Database       : test
 
 Target Server Type    : MYSQL
-Target Server Version : 50718
+Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-07-26 18:59:32
+Date: 2018-07-27 17:48:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,7 +74,7 @@ CREATE TABLE `customer` (
 DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
   `goods_id` varchar(128) NOT NULL,
-  `good_name` varchar(128) NOT NULL COMMENT '商品名称，如：苹果',
+  `goods_name` varchar(128) NOT NULL COMMENT '商品名称，如：苹果',
   `kind` varchar(32) NOT NULL COMMENT '商品种类，如：水果',
   `detail` varchar(1000) DEFAULT '' COMMENT '商品详细信息',
   `type` varchar(32) DEFAULT '库存商品' COMMENT '商品类型，其他，例如：需求商品,未上架，已下架',
@@ -117,7 +117,7 @@ INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '', 'bar', '1', '2'
 INSERT INTO `nav` VALUES ('进销存系统', '待办事项', '', 'bar', '1', '3', 'site/welcome', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '订单详情', 'item', '1', '0', 'order/order-info', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '销售榜单', 'item', '1', '1', 'order/order-rank', '正常', '0');
-INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/pruch-goods', '正常', '0');
+INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/purch-goods', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '办公设备', 'item', '1', '1', 'purch/purch-office', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '库存信息', 'item', '1', '0', 'reper/reper-stock', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '仓库信息', 'item', '1', '1', 'reper/reper-info', '正常', '0');
@@ -142,45 +142,17 @@ CREATE TABLE `orders` (
   `amountofmoney` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT '订单总金额',
   `logis_id` varchar(128) NOT NULL DEFAULT '' COMMENT '货运单号，为logistic表外键',
   `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '最后操作人',
-  `start_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '订单开始时间',
-  `end_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '订单结束时间',
+  `start_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单开始时间',
+  `end_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单结束时间',
   `status` varchar(32) NOT NULL DEFAULT '' COMMENT '订单当前状态',
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除订单',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
+  `update_time` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
 INSERT INTO `orders` VALUES ('1', '销售订单', '李大爷的订单', '1', 'pingguo', '苹果', '100', '1024.00', '圆通2134234', '雪辉', '2018-07-09 10:42:01', '2018-07-03 21:42:01', '已成交', '0', '2018-07-09 23:42:01');
 INSERT INTO `orders` VALUES ('2', '采购订单', '王大爷的订单', '1', 'pingguo', '铅笔', '200', '1024.00', '圆通2134234', '雪辉', '2018-07-09 10:42:01', '2018-07-03 21:42:01', '未成交', '0', '2018-07-09 23:42:01');
-INSERT INTO `orders` VALUES ('3', '', 'sad', '', '', '', '0', '0.00', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '订单被创建', '0', '0000-00-00 00:00:00');
-INSERT INTO `orders` VALUES ('4', '', 'sad', '', '', '', '0', '0.00', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '订单被创建', '0', '0000-00-00 00:00:00');
-INSERT INTO `orders` VALUES ('5', '', 'sdfsaf', '', '', '', '0', '0.00', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '订单被创建', '0', '0000-00-00 00:00:00');
-
--- ----------------------------
--- Table structure for trade
--- ----------------------------
-DROP TABLE IF EXISTS `trade`;
-CREATE TABLE `trade` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `trade_id` varchar(128) NOT NULL DEFAULT '' COMMENT '交易编号',
-  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '交易名称',
-  `customer_id` varchar(128) NOT NULL DEFAULT '' COMMENT '顾客ID',
-  `project_id` int(64) NOT NULL DEFAULT '0' COMMENT '项目ID',
-  `order_id` int(64) NOT NULL DEFAULT '0' COMMENT '订单ID',
-  `detail` varchar(255) NOT NULL DEFAULT '' COMMENT '详细信息',
-  `dealer` varchar(32) NOT NULL DEFAULT '' COMMENT '跟单员',
-  `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '操作员',
-  `start_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '开始时间',
-  `end_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '订单完成时间',
-  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
-  `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否被删除',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='【交易】交易明细记录表';
-
--- ----------------------------
--- Records of trade
--- ----------------------------
+INSERT INTO `orders` VALUES ('6', '', 'sfasdf', '', '', '', '0', '0.00', '', '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '订单被创建', '0', '1970-01-01 00:00:00');
