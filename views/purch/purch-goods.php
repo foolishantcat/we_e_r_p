@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-24 16:07:43
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-27 17:34:58
+ * @Last Modified time: 2018-07-30 21:44:49
  */
 ?>
 <div id="contentGoods" class="container" style="width: 100%;">
@@ -127,7 +127,7 @@
             <th>处理</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tableContents">
         <tr>
             <?php
                 foreach ($goods_info as $row) {
@@ -224,7 +224,8 @@ function commit_new_goods() {
             var t_status = row.status;
             // 根据order_id 获取 select_id
             var select_id = "item" + t_goods_id;
-            html += "<td>" + t_goods_id + "</td>" +
+            html += "<tr>" +
+            "<td>" + t_goods_id + "</td>" +
             "<td>" + t_goods_name + "</td>" +
             "<td>" + t_kind + "</td>" +
             "<td>" + t_detail + "</td>" +
@@ -244,9 +245,9 @@ function commit_new_goods() {
             "</td>" +
             "<td>" +
                 "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
-            "</td>";
-
-            $("#goodsTable tr:eq(1)").prepend(html);//将新数据填充到table第一条数据
+            "</td>" +
+            "</tr>";
+            $(html).appendTo("#tableContents:first");//将新数据填充到table
         },
         error: function(data) {
             var jsonObj = JSON.parse(data);
@@ -286,10 +287,7 @@ function search_goods(goodsId, goodsName, searchKind, searchType, handler) {
             $("#goodsTable tr:gt(0)").remove();//第一行是table的表格头不需清除
             var html = '';
             for(var i=0; i < tableData.length; i++){
-                var jsonObj = JSON.parse(data);
-                var tableData = jsonObj.data;
-                var html = '';
-                var row = tableData;
+                var row = tableData[i];
                 var t_goods_id = row.goods_id;
                 var t_goods_name = row.goods_name;
                 var t_type = row.type;
@@ -325,7 +323,7 @@ function search_goods(goodsId, goodsName, searchKind, searchType, handler) {
                 "</td>" +
                 "</tr>";
             }
-            $("#goodsTable").append(html);//将新数据填充到table
+            $(html).appendTo("#tableContents:first");//将新数据填充到table
         },
         error: function(data) {
             var jsonObj = JSON.parse(data);

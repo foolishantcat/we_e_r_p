@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-26 15:14:32
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-30 20:39:26
+ * @Last Modified time: 2018-07-30 21:31:12
  */
 ?>
 <div id="contentPurch" class="container" style="width: 100%;">
@@ -144,7 +144,7 @@
             <th>处理</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tableContents">
         <tr>
             <?php
                 foreach ($office_info as $row) {
@@ -223,11 +223,11 @@ function commit_new_office() {
         success: function (data) {
             var jsonObj = JSON.parse(data);
             var tableData = jsonObj.data;
-            alert('[成功]新增设备: ' + tableData);
             var html = '';
             var row = tableData;
             var t_office_id = row.office_id;
             var t_office_name = row.office_name;
+            alert('[成功]新增设备: ' + t_office_name);
             var t_kind = row.kind;
             var t_attr = row.attr;
             var t_detail = row.detail;
@@ -237,7 +237,8 @@ function commit_new_office() {
             var t_status = row.status;
             // 根据order_id 获取 select_id
             var select_id = "item" + t_office_id;
-            html += "<td>" + t_office_id + "</td>" +
+            html += "<tr>" +
+            "<td>" + t_office_id + "</td>" +
             "<td>" + t_office_name + "</td>" +
             "<td>" + t_kind + "</td>" +
             "<td>" + t_attr + "</td>" +
@@ -256,9 +257,9 @@ function commit_new_office() {
             "</td>" +
             "<td>" +
                 "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
-            "</td>";
-
-            $("#officeTable tr:eq(1)").prepend(html);//将新数据填充到table第一条数据
+            "</td>" +
+            "</tr>";
+            $(html).prependTo("#tableContents:first");//将新数据填充到table
         },
         error: function(data) {
             console.log('Error: ' + data);
@@ -295,9 +296,7 @@ function search_office(searchDevId, searchDevName, selectDevKind, selectDevAttr)
             $("#officeTable tr:gt(0)").remove();//第一行是table的表格头不需清除
             var html = '';
             for(var i=0; i < tableData.length; i++){
-                var jsonObj = JSON.parse(data);
-                var tableData = jsonObj.data;
-                var row = tableData;
+                var row = tableData[i];
                 var t_office_id = row.office_id;
                 var t_office_name = row.office_name;
                 var t_kind = row.kind;
@@ -332,7 +331,7 @@ function search_office(searchDevId, searchDevName, selectDevKind, selectDevAttr)
                 "</td>" +
                 "</tr>";
             }
-            $("#officeTable").append(html);//将新数据填充到table
+            $(html).appendTo("#tableContents:first");
         },
         error: function(data) {
             console.log('Error: ' + data);

@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 20:10:54
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-30 20:18:55
+ * @Last Modified time: 2018-07-30 21:44:00
  */
 
 namespace app\controllers;
@@ -109,11 +109,14 @@ class PurchController extends Controller
                         'handler' => '义成',
                         'start_time' => '2018-07-27 00:00:00',
                         'update_time' => '2018-07-27 00:00:00',
+                        'status' => '正常',
                     ];
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $data = [
                         'code' => 0,
-                        'data' => $search_test,
+                        'data' => [
+                            $search_test,
+                        ],
                     ];
                     return $data;
                 } elseif ($action === 'commit_handle') {
@@ -209,7 +212,7 @@ class PurchController extends Controller
                             'detail' => $detail,
                             'handler' => $handler,
                             'start_time' => $start_time,
-                            'update_date' => $start_time,
+                            'update_time' => $start_time,
                             'status' => $status,
                         ],
                     ];
@@ -231,7 +234,7 @@ class PurchController extends Controller
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $data = [
                         'code' => 0,
-                        'data' => $search_test,
+                        'data' => [$search_test, ],
                     ];
                     return $data;
                 } elseif ($action === 'commit_handle') {
