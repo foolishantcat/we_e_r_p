@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-26 15:14:32
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 15:18:11
+ * @Last Modified time: 2018-07-30 21:31:12
  */
 ?>
 <div id="contentPurch" class="container" style="width: 100%;">
@@ -17,7 +17,7 @@
             </button>
             <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#searchOffice">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                搜索办公设备
+                搜索设备
             </button>
         </div>
 
@@ -35,31 +35,40 @@
                         <div class="alert alert-primary" role="alert">
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label for="orderTitle" class="col-sm-2 control-label">商品名称*</label>
+                                    <label for="newDevName" class="col-sm-2 control-label">设备名称*</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="orderTitle"
-                                           placeholder="请输入客户ID">
+                                        <input type="text" class="form-control" id="newDevName"
+                                           placeholder="请输入设备名称">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="customerName" class="col-sm-2 control-label">类别*</label>
+                                    <label for="newDevKind" class="col-sm-2 control-label">类别*</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="customerName"
-                                           placeholder="请输入客户姓名">
+                                        <select id="newDevKind" class="selectpicker">
+                                            <option>文娱</option>
+                                            <option>装修</option>
+                                            <option>耗材</option>
+                                            <option>员工使用</option>
+                                            <option>其他</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="goodsId" class="col-sm-2 control-label">状态*</label>
+                                    <label for="newDevAttr" class="col-sm-2 control-label">属性*</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsId"
-                                           placeholder="请输入商品ID">
+                                        <select id="newDevAttr" class="selectpicker">
+                                            <option>消耗品</option>
+                                            <option>固定资产</option>
+                                            <option>非固定资产</option>
+                                            <option>其他</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="goodsName" class="col-sm-2 control-label">详细信息</label>
+                                    <label for="newDevDetail" class="col-sm-2 control-label">详细信息</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsName"
-                                           placeholder="请输入商品详细描述信息">
+                                        <input type="text" class="form-control" id="newDevDetail"
+                                           placeholder="请输入设备详细描述信息">
                                     </div>
                                 </div>
                             </form>
@@ -68,39 +77,41 @@
                     <!-- 模态框底部 -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="commit_new_goods()">提交</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="commit_new_office()">提交</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="searchGoods" class="col-md-4 collapse" >
-            <!-- 查询交易组框 -->
+        <div id="searchOffice" class="col-md-4 collapse" >
+            <!-- 查询办公设备 -->
             <form id="formSearch" class="bs-example bs-example-form" role="form">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">商品编号</span>
-                    <input id="goodsId" type="text" class="form-control">
+                    <span class="input-group-addon">设备编号</span>
+                    <input id="searchDevId" type="text" class="form-control">
                 </div>
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">商品名称</span>
-                    <input id="goodsName" type="text" class="form-control">
+                    <span class="input-group-addon">设备名称</span>
+                    <input id="searchDevName" type="text" class="form-control">
                 </div>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">类别</span>
                     <!-- 这里需要从后台获取数据,类别 -->
-                    <select id='selectGoodsType' class='selectpicker'>
-                        <option>水果</option>
-                        <option>文具</option>
-                        <option>电脑耗材</option>
-                        <option>海鲜</option>
+                    <select id='selectDevKind' class='selectpicker'>
+                        <option>文娱</option>
+                        <option>装修</option>
+                        <option>耗材</option>
+                        <option>员工使用</option>
+                        <option>其他</option>
                     </select>
                 </div>
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">状态</span>
-                    <!-- 这里需要从后台获取数据,状态 -->
-                    <select id='selectStatus' class='selectpicker'>
-                        <option>售卖中</option>
-                        <option>已下架</option>
-                        <option>未上架</option>
+                    <span class="input-group-addon">设备属性</span>
+                    <!-- 这里需要从后台获取数据,类别 -->
+                    <select id='selectDevAttr' class='selectpicker'>
+                        <option>消耗品</option>
+                        <option>固定资产</option>
+                        <option>非固定资产</option>
+                        <option>其他</option>
                     </select>
                 </div>
                 <div class="input-group input-group-sm">
@@ -108,7 +119,7 @@
                     <input id="handler" type="text" class="form-control">
                 </div>
                 <div>
-                    <button id="btSearchGoods" class="btn btn-success" type="button" onclick="search_order(formSearch.goodsId, formSearch.goodsName, formSearch.customerName,formSearch.goodsId)">
+                    <button id="btSearchOffice" class="btn btn-success" type="button" onclick="search_office(formSearch.searchDevId, formSearch.searchDevName, formSearch.selectDevKind,formSearch.selectDevAttr)">
                         搜一下
                     </button>
                 </div>
@@ -117,42 +128,39 @@
     </div>
 
     <!-- 展示信息用的表格 -->
-    <table class="table table-bordered table-striped" style="width: 100%;">
+    <table id="officeTable" class="table table-bordered table-striped" style="width: 100%;">
         <thead>
         <tr>
-            <th>编号</th>
-            <th>类型</th>
-            <th>标题</th>
-            <th>客户ID</th>
-            <th>商品ID</th>
-            <th>商品名称</th>
-            <th>商品数量</th>
-            <th>物流信息</th>
-            <th>跟单员</th>
+            <th>设备编号</th>
+            <th>设备名称</th>
+            <th>类别</th>
+            <th>属性</th>
+            <th>详细信息</th>
+            <th>操作员</th>
             <th>开始时间</th>
             <th>更新时间</th>
-            <th>结束时间</th>
             <th>状态</th>
             <th>操作</th>
             <th>处理</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tableContents">
         <tr>
             <?php
-                foreach ($order_info as $row) {
+                foreach ($office_info as $row) {
                     echo "<tr>";
                     foreach($row as $k => $v) {
                         echo "<td>";
                         echo "$v" . "";
                         echo "</td>";
                     }
-                    $select_id = "item".$row['order_id'];
+                    $select_id = "item".$row['office_id'];
                     echo "<td>";
                     echo "<select id='$select_id' class='selectpicker'>";
-                    echo "<option>成交订单</option>";
-                    echo "<option>订单发货</option>";
-                    echo "<option>删除订单</option>";
+                    echo "<option>采购申请</option>";
+                    echo "<option>修改</option>";
+                    echo "<option>报废</option>";
+                    echo "<option>删除</option>";
                     echo "</select>";
                     echo "</td>";
                     echo "<td>";
@@ -192,32 +200,66 @@
 <script>
 var req = new XMLHttpRequest();
 
-function commit_new_goods() {
+function commit_new_office() {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "purch/purch-goods";
+    var r_url = "index.php?r=" + "purch/purch-office";
     console.log(r_url);
-    var title = document.getElementById('orderTitle').value;
-    var customer_name = document.getElementById('customerName').value;
-    var goods_id = document.getElementById('goodsId').value;
-    var goods_name = document.getElementById('goodsName').value;
-    var goods_count = document.getElementById('goodsCount').value;
-    var logis_info = document.getElementById('logisInfo').value;
-    console.log(title+"|"+customer_name+"|"+goods_id+"|"+goods_name+"|"+goods_count+"|"+logis_info);
+    var m_office_name = document.getElementById('newDevName').value;
+    var m_office_kind = document.getElementById('newDevKind').value;
+    var m_office_attr = document.getElementById('newDevAttr').value;
+    var m_office_detail = document.getElementById('newDevDetail').value;
+    console.log(m_office_name+"|"+m_office_kind+"|"+m_office_attr+"|"+m_office_detail);
     $.ajax({
         type: 'POST',
         url: r_url,
         dataType: 'HTML',
         data: {
-            action: 'new_order',
-            title: title,
-            customer_name: customer_name,
-            goods_id: goods_id,
-            goods_name: goods_name,
-            goods_count: goods_count,
-            logis_info: logis_info,
+            action: 'new_office',
+            office_name: m_office_name,
+            kind: m_office_kind,
+            attr: m_office_attr,
+            detail: m_office_detail,
         },
         success: function (data) {
-            alert('[成功]新增交易: ' + data);
+            var jsonObj = JSON.parse(data);
+            var tableData = jsonObj.data;
+            var html = '';
+            var row = tableData;
+            var t_office_id = row.office_id;
+            var t_office_name = row.office_name;
+            alert('[成功]新增设备: ' + t_office_name);
+            var t_kind = row.kind;
+            var t_attr = row.attr;
+            var t_detail = row.detail;
+            var t_handler = row.handler;
+            var t_start_time = row.start_time;
+            var t_update_time = row.update_time;
+            var t_status = row.status;
+            // 根据order_id 获取 select_id
+            var select_id = "item" + t_office_id;
+            html += "<tr>" +
+            "<td>" + t_office_id + "</td>" +
+            "<td>" + t_office_name + "</td>" +
+            "<td>" + t_kind + "</td>" +
+            "<td>" + t_attr + "</td>" +
+            "<td>" + t_detail + "</td>" +
+            "<td>" + t_handler + "</td>" +
+            "<td>" + t_start_time + "</td>" +
+            "<td>" + t_update_time + "</td>" +
+            "<td>" + t_status + "</td>" +
+            "<td>" +
+                "<select id='" + select_id + "' class='selectpicker'>" +
+                    "<option>采购申请</option>" +
+                    "<option>修改</option>" +
+                    "<option>报废</option>" +
+                    "<option>删除</option>" +
+                "</select>" +
+            "</td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
+            "</td>" +
+            "</tr>";
+            $(html).prependTo("#tableContents:first");//将新数据填充到table
         },
         error: function(data) {
             console.log('Error: ' + data);
@@ -226,28 +268,70 @@ function commit_new_goods() {
     });
 }
 
-function search_goods(orderId, handler, customerName, goodsId) {
+function search_office(searchDevId, searchDevName, selectDevKind, selectDevAttr) {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "purch/purch-goods";
+    var r_url = "index.php?r=" + "purch/purch-office";
     console.log(r_url);
-    var m_orderId = orderId.value;
-    var m_handler = handler.value;
-    var m_customerName = customerName.value;
-    var m_goodsId = goodsId.value;
-    console.log(m_orderId+"|"+m_handler+"|"+m_customerName+"|"+m_goodsId);
+    var m_office_id = searchDevId.value;
+    var m_office_name = searchDevName.value;
+    var m_kind = selectDevKind.value;
+    var m_attr = selectDevAttr.value;
+    console.log(m_office_id+"|"+m_office_name+"|"+m_kind+"|"+m_attr);
     $.ajax({
         type: 'POST',
         url: r_url,
         dataType: 'HTML',
         data: {
-            action: 'search_order',
-            order_id: m_orderId,
-            handler: m_handler,
-            customer_name: m_customerName,
-            goods_id: m_goodsId,
+            action: 'search_office',
+            office_id: m_office_id,
+            office_name: m_office_name,
+            kind: m_kind,
+            attr: m_attr,
         },
         success: function (data) {
             alert('[成功]搜索成功: ' + data);
+            // 解析json，然后替换前端
+            var jsonObj = JSON.parse(data);
+            var tableData = jsonObj.data;
+            $("#officeTable tr:gt(0)").remove();//第一行是table的表格头不需清除
+            var html = '';
+            for(var i=0; i < tableData.length; i++){
+                var row = tableData[i];
+                var t_office_id = row.office_id;
+                var t_office_name = row.office_name;
+                var t_kind = row.kind;
+                var t_attr = row.attr;
+                var t_detail = row.detail;
+                var t_status = row.status;
+                var t_handler = row.handler;
+                var t_start_time = row.start_time;
+                var t_update_time = row.update_time;
+                // 根据order_id 获取 select_id
+                var select_id = "item" + t_office_id;
+                html += "<tr>" + "<td>" + t_office_id + "</td>" +
+                "<td>" + t_office_name + "</td>" +
+                "<td>" + t_kind + "</td>" +
+                "<td>" + t_attr + "</td>" +
+                "<td>" + t_detail + "</td>" +
+                "<td>" + t_handler + "</td>" +
+                "<td>" + t_start_time + "</td>" +
+                "<td>" + t_update_time + "</td>" +
+                "<td>" + t_status + "</td>" +
+                "<td>" +
+                    "<select id='" + select_id + "' class='selectpicker'>" +
+                        "<option>采购申请</option>" +
+                        "<option>上架</option>" +
+                        "<option>下架</option>" +
+                        "<option>修改</option>" +
+                        "<option>删除</option>" +
+                    "</select>" +
+                "</td>" +
+                "<td>" +
+                    "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
+                "</td>" +
+                "</tr>";
+            }
+            $(html).appendTo("#tableContents:first");
         },
         error: function(data) {
             console.log('Error: ' + data);
@@ -258,18 +342,18 @@ function search_goods(orderId, handler, customerName, goodsId) {
 
 function commit_handle(obj) {
     //目前只支持index.php
-    var r_url = "index.php?r=" + "purch/purch-goods";
+    var r_url = "index.php?r=" + "purch/purch-office";
     console.log(r_url);
-    var m_order_id = obj.id.split('item')[1];
+    var m_office_id = obj.id.split('item')[1];
     var m_handle = obj.value;
-    console.log(m_order_id+"|"+m_handle);
+    console.log(m_office_id+"|"+m_handle);
     $.ajax({
         type: 'POST',
         url: r_url,
         dataType: 'HTML',
         data: {
             action: 'commit_handle',
-            order_id: m_order_id,
+            office_id: m_office_id,
             handle: m_handle,
         },
         success: function (data) {
