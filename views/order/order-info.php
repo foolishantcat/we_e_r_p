@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-31 14:51:30
+ * @Last Modified time: 2018-07-31 21:16:44
  */
 ?>
 
@@ -117,7 +117,7 @@
     </div>
 
     <!-- 展示信息用的表格 -->
-    <table id="orderTable" class="table table-striped table-bordered dataTable no-footer" style="width: 100%;">
+    <table id="orderTable" class="table table-bordered table-striped" style="width: 100%;">
         <thead>
         <tr>
             <th>编号</th>
@@ -139,35 +139,30 @@
         </tr>
         </thead>
         <tbody id="tableContents">
-        <tr>
             <?php
                 foreach ($order_info as $row) {
                     echo "<tr>";
-                    //foreach($row as $k => $v) {
-                    //    echo "<td>";
-                    //    echo "$v" . "";
-                    //    echo "</td>";
-                    //}
                     echo "<td>" . $row['order_id'] . "</td>";
-                    echo "<td>" . $row['type'] . "</td>";
+                    echo "<td>" . $row['kind'] . "</td>";
                     echo "<td>" . $row['title'] . "</td>";
                     echo "<td>" . $row['customer_id'] . "</td>";
                     echo "<td>" . $row['goods_id'] . "</td>";
                     echo "<td>" . $row['goods_name'] . "</td>";
                     echo "<td>" . $row['goods_count'] . "</td>";
-                    echo "<td>" . $row['amountofmoney'] . "</td>";
+                    echo "<td>" . $row['amountofmoney'] ."</td>";
                     echo "<td>" . $row['logis_id'] . "</td>";
                     echo "<td>" . $row['handler'] . "</td>";
                     echo "<td>" . $row['start_time'] . "</td>";
                     echo "<td>" . $row['update_time'] . "</td>";
                     echo "<td>" . $row['end_time'] . "</td>";
                     echo "<td>" . $row['status'] . "</td>";
-                    $select_id = "item".$row['order_id'];
                     echo "<td>";
+                    $select_id = "item".$row['order_id'];
                     echo "<select id='$select_id' class='selectpicker'>";
                     echo "<option>成交订单</option>";
                     echo "<option>订单发货</option>";
-                    echo "<option>删除订单</option>";
+                    echo "<option>修改</option>";
+                    echo "<option>删除</option>";
                     echo "</select>";
                     echo "</td>";
                     echo "<td>";
@@ -176,13 +171,24 @@
                     echo "</tr>";
                 }
             ?>
-        </tr>
         </tbody>
     </table>
 </div>
 
 <script>
-var req = new XMLHttpRequest();
+// 初始化界面
+$(document).ready(function(){
+    $('#orderTable').dataTable({
+        "paging": true,
+        "pageLength": 10,
+        "pagingType": "full_numbers",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "processing": true,
+        "searching": true,
+        "stateSave": true,
+        "ordering": true,
+    });
+});
 
 function commit_new_order() {
     //目前只支持index.php

@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-26 15:14:32
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-30 21:31:12
+ * @Last Modified time: 2018-07-31 21:18:29
  */
 ?>
 <div id="contentPurch" class="container" style="width: 100%;">
@@ -172,33 +172,21 @@
         </tr>
         </tbody>
     </table>
-    <ul class="pagination pagination-sm" style="padding-bottom: 0px;">
-        <li>
-             <a href="#">Prev</a>
-        </li>
-        <li>
-             <a href="#">1</a>
-        </li>
-        <li>
-             <a href="#">2</a>
-        </li>
-        <li>
-             <a href="#">3</a>
-        </li>
-        <li>
-             <a href="#">4</a>
-        </li>
-        <li>
-             <a href="#">5</a>
-        </li>
-        <li>
-             <a href="#">Next</a>
-        </li>
-    </ul>
 </div>
 
 <script>
-var req = new XMLHttpRequest();
+$(document).ready(function(){
+    $('#officeTable').dataTable({
+        "paging": true,
+        "pageLength": 10,
+        "pagingType": "full_numbers",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "processing": true,
+        "searching": true,
+        "stateSave": true,
+        "ordering": true,
+    });
+});
 
 function commit_new_office() {
     //目前只支持index.php
