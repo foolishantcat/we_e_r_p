@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : ethan_mysql
-Source Server Version : 50722
-Source Host           : 192.168.159.132:3306
-Source Database       : test
+Source Server         : loc
+Source Server Version : 50718
+Source Host           : 192.168.8.128:3306
+Source Database       : we_erp
 
 Target Server Type    : MYSQL
-Target Server Version : 50722
+Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-07-30 21:55:08
+Date: 2018-07-31 09:16:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -117,6 +117,7 @@ INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '', 'bar', '1', '2'
 INSERT INTO `nav` VALUES ('进销存系统', '待办事项', '', 'bar', '1', '3', 'site/welcome', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '订单详情', 'item', '1', '0', 'order/order-info', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '销售榜单', 'item', '1', '1', 'order/order-rank', '正常', '0');
+INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/pruch-goods', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '办公设备', 'item', '1', '1', 'purch/purch-office', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '库存信息', 'item', '1', '0', 'reper/reper-stock', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '仓库信息', 'item', '1', '1', 'reper/reper-info', '正常', '0');
@@ -125,8 +126,6 @@ INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '出入库申请', 
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '退料管理', 'item', '1', '4', 'reper/reper-return', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '废料管理', 'item', '1', '5', 'reper/reper-rubbish', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '待办事项', '流程审批', 'item', '1', '0', 'jxcitem/flow-approve', '正常', '0');
-INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/purch-goods', '正常', '0');
-INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '采购列表', 'item', '1', '2', 'purch/purch-list', '正常', '0');
 
 -- ----------------------------
 -- Table structure for orders
@@ -142,20 +141,49 @@ CREATE TABLE `orders` (
   `good_count` int(32) NOT NULL DEFAULT '0' COMMENT '商品数量，单位“件”',
   `amountofmoney` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT '订单总金额',
   `logis_id` varchar(128) NOT NULL DEFAULT '' COMMENT '货运单号，为logistic表外键',
-  `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '最后操作人',
+  `handler_id` int(11) NOT NULL DEFAULT '0' COMMENT '操作人ID',
+  `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '操作人',
   `start_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单开始时间',
   `end_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单结束时间',
+  `end_date` date NOT NULL DEFAULT '0000-00-00' COMMENT '结束日期',
   `status` varchar(32) NOT NULL DEFAULT '' COMMENT '订单当前状态',
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除订单',
-  `update_time` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
-  PRIMARY KEY (`order_id`)
+  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
+  PRIMARY KEY (`order_id`),
+  KEY `end_time` (`end_time`),
+  KEY `endl_date` (`end_date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES ('1', '销售订单', '李大爷的订单', '1', 'pingguo', '苹果', '100', '1024.00', '圆通2134234', '雪辉', '2018-07-09 10:42:01', '2018-07-03 21:42:01', '已成交', '0', '2018-07-09 23:42:01');
-INSERT INTO `orders` VALUES ('2', '采购订单', '王大爷的订单', '1', 'pingguo', '铅笔', '200', '1024.00', '圆通2134234', '雪辉', '2018-07-09 10:42:01', '2018-07-03 21:42:01', '未成交', '0', '2018-07-09 23:42:01');
-INSERT INTO `orders` VALUES ('6', '', 'sfasdf', '', '', '', '0', '0.00', '', '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '订单被创建', '0', '1970-01-01 00:00:00');
-INSERT INTO `orders` VALUES ('7', '', 'dddd', '', '', '', '0', '0.00', '', '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '订单被创建', '0', '1970-01-01 00:00:00');
-INSERT INTO `orders` VALUES ('8', '', '123', '', '', '', '0', '0.00', '', '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '订单被创建', '0', '1970-01-01 00:00:00');
+INSERT INTO `orders` VALUES ('1', '销售订单', '李大爷的订单', '1', 'pingguo', '苹果', '100', '1024.00', '圆通2134234', '1', '雪辉', '2018-07-09 10:42:01', '2018-07-30 21:42:01', '2018-07-30', '已成交', '0', '2018-07-25 22:42:32');
+INSERT INTO `orders` VALUES ('2', '采购订单', '王大爷的订单', '1', 'pingguo', '铅笔', '200', '1024.00', '圆通2134234', '1', '雪辉', '2018-07-09 10:42:01', '2018-07-24 21:42:01', '2018-07-16', '未成交', '0', '2018-07-25 22:42:36');
+INSERT INTO `orders` VALUES ('7', '1', '', '', '', '', '150', '0.00', '', '2', '议程', '2018-07-30 00:00:00', '2018-07-30 00:00:00', '2018-07-30', '', '0', '2018-07-25 23:32:02');
+INSERT INTO `orders` VALUES ('8', '', '', '', '', '', '250', '0.00', '', '3', 'sd', '2018-07-30 00:00:00', '2018-07-31 00:00:00', '0000-00-00', '', '0', '2018-07-26 10:48:53');
+
+-- ----------------------------
+-- Table structure for trade
+-- ----------------------------
+DROP TABLE IF EXISTS `trade`;
+CREATE TABLE `trade` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `trade_id` varchar(128) NOT NULL DEFAULT '' COMMENT '交易编号',
+  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '交易名称',
+  `customer_id` varchar(128) NOT NULL DEFAULT '' COMMENT '顾客ID',
+  `project_id` int(64) NOT NULL DEFAULT '0' COMMENT '项目ID',
+  `order_id` int(64) NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `detail` varchar(255) NOT NULL DEFAULT '' COMMENT '详细信息',
+  `dealer` varchar(32) NOT NULL DEFAULT '' COMMENT '跟单员',
+  `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '操作员',
+  `start_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '开始时间',
+  `end_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '订单完成时间',
+  `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
+  `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否被删除',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='【交易】交易明细记录表';
+
+-- ----------------------------
+-- Records of trade
+-- ----------------------------
