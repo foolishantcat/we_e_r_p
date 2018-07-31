@@ -11,15 +11,8 @@ namespace app\controllers;
 
 use app\service\order\OrderService;
 use Yii;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\CrmForm;
-use app\models\EntryForm;
-use yii\data\Pagination;
-use yii\db\Query;
 
 class OrderController extends Controller
 {
@@ -27,7 +20,6 @@ class OrderController extends Controller
     public function actionOrderInfo()
     {
         $request = Yii::$app->request;
-        $id = Yii::$app->user->id;
         $isGuest = Yii::$app->user->isGuest;
         if ($isGuest) {
             return '请先登录';
@@ -52,6 +44,8 @@ class OrderController extends Controller
                 return $data = $this->renderAjax('order-info',
                     [
                         "order_info" => $order_info['data'],
+                        'page' => $page,
+                        'rows' => $rows
                     ]);
             } elseif ($request->isPost) {
                 // 订单详情界面上传的数据

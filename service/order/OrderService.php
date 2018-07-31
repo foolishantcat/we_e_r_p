@@ -4,7 +4,6 @@ namespace app\service\order;
 
 
 use app\models\OrdersDao;
-use yii\db\ActiveQuery;
 
 class OrderService
 {
@@ -53,10 +52,10 @@ class OrderService
         $orderID = $ordersDao->getAttribute('order_id');
         $newData = $this->getOrdersInfo(['order_id' => $orderID]);
         if ($res) {
-            return ['code' => 0, 'msg' => 'ok', 'data' => $newData];
+            return $newData;
         } else {
             \Yii::info('add orders error.', __FUNCTION__);
-            return ['code' => -1, 'msg' => 'add orders error.'];
+            return $newData;
         }
     }
 
