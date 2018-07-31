@@ -117,8 +117,9 @@ INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '', 'bar', '1', '2'
 INSERT INTO `nav` VALUES ('进销存系统', '待办事项', '', 'bar', '1', '3', 'site/welcome', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '订单详情', 'item', '1', '0', 'order/order-info', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '销售榜单', 'item', '1', '1', 'order/order-rank', '正常', '0');
-INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/pruch-goods', '正常', '0');
+INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/purch-goods', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '办公设备', 'item', '1', '1', 'purch/purch-office', '正常', '0');
+INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '采购列表', 'item', '1', '2', 'purch/purch-list', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '库存信息', 'item', '1', '0', 'reper/reper-stock', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '仓库信息', 'item', '1', '1', 'reper/reper-info', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '领用信息', 'item', '1', '2', 'reper/reper-lend', '正常', '0');
@@ -145,13 +146,13 @@ CREATE TABLE `orders` (
   `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '操作人',
   `start_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单开始时间',
   `end_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单结束时间',
-  `end_date` date NOT NULL DEFAULT '0000-00-00' COMMENT '结束日期',
+  `end_date` date NOT NULL DEFAULT '1970-01-01' COMMENT '结束日期',
   `status` varchar(32) NOT NULL DEFAULT '' COMMENT '订单当前状态',
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除订单',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
+  `update_time` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
   PRIMARY KEY (`order_id`),
   KEY `end_time` (`end_time`),
-  KEY `endl_date` (`end_date`)
+  KEY `end_date` (`end_date`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -160,7 +161,7 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` VALUES ('1', '销售订单', '李大爷的订单', '1', 'pingguo', '苹果', '100', '1024.00', '圆通2134234', '1', '雪辉', '2018-07-09 10:42:01', '2018-07-30 21:42:01', '2018-07-30', '已成交', '0', '2018-07-25 22:42:32');
 INSERT INTO `orders` VALUES ('2', '采购订单', '王大爷的订单', '1', 'pingguo', '铅笔', '200', '1024.00', '圆通2134234', '1', '雪辉', '2018-07-09 10:42:01', '2018-07-24 21:42:01', '2018-07-16', '未成交', '0', '2018-07-25 22:42:36');
 INSERT INTO `orders` VALUES ('7', '1', '', '', '', '', '150', '0.00', '', '2', '议程', '2018-07-30 00:00:00', '2018-07-30 00:00:00', '2018-07-30', '', '0', '2018-07-25 23:32:02');
-INSERT INTO `orders` VALUES ('8', '', '', '', '', '', '250', '0.00', '', '3', 'sd', '2018-07-30 00:00:00', '2018-07-31 00:00:00', '0000-00-00', '', '0', '2018-07-26 10:48:53');
+INSERT INTO `orders` VALUES ('8', '', '', '', '', '', '250', '0.00', '', '3', 'sd', '2018-07-30 00:00:00', '2018-07-31 00:00:00', '1970-01-01', '', '0', '2018-07-26 10:48:53');
 
 -- ----------------------------
 -- Table structure for trade
@@ -176,8 +177,8 @@ CREATE TABLE `trade` (
   `detail` varchar(255) NOT NULL DEFAULT '' COMMENT '详细信息',
   `dealer` varchar(32) NOT NULL DEFAULT '' COMMENT '跟单员',
   `handler` varchar(32) NOT NULL DEFAULT '' COMMENT '操作员',
-  `start_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '开始时间',
-  `end_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '订单完成时间',
+  `start_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '开始时间',
+  `end_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '订单完成时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否被删除',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
