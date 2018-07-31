@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-24 16:07:43
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-30 21:44:49
+ * @Last Modified time: 2018-07-31 10:46:43
  */
 ?>
 <div id="contentGoods" class="container" style="width: 100%;">
@@ -132,13 +132,17 @@
             <?php
                 foreach ($goods_info as $row) {
                     echo "<tr>";
-                    foreach($row as $k => $v) {
-                        echo "<td>";
-                        echo "$v" . "";
-                        echo "</td>";
-                    }
-                    $select_id = "item".$row["goods_id"];
+                    echo "<td>" . $row['goods_id'] . "</td>";
+                    echo "<td>" . $row['goods_name'] . "</td>";
+                    echo "<td>" . $row['kind'] . "</td>";
+                    echo "<td>" . $row['detail'] . "</td>";
+                    echo "<td>" . $row['type'] . "</td>";
+                    echo "<td>" . $row['handler'] . "</td>";
+                    echo "<td>" . $row['start_time'] ."</td>";
+                    echo "<td>" . $row['update_time'] . "</td>";
+                    echo "<td>" . $row['status'] . "</td>";
                     echo "<td>";
+                    $select_id = "item".$row['goods_id'];
                     echo "<select id='$select_id' class='selectpicker'>";
                     echo "<option>采购申请</option>";
                     echo "<option>上架</option>";
@@ -247,7 +251,7 @@ function commit_new_goods() {
                 "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
             "</td>" +
             "</tr>";
-            $(html).appendTo("#tableContents:first");//将新数据填充到table
+            $(html).prependTo("#tableContents:first");//将新数据填充到table
         },
         error: function(data) {
             var jsonObj = JSON.parse(data);
