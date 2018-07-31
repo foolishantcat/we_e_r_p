@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-09 21:37:09
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 21:44:57
+ * @Last Modified time: 2018-07-31 14:51:30
  */
 ?>
 
@@ -117,7 +117,7 @@
     </div>
 
     <!-- 展示信息用的表格 -->
-    <table id="orderTable" class="table table-bordered table-striped" style="width: 100%;">
+    <table id="orderTable" class="table table-striped table-bordered dataTable no-footer" style="width: 100%;">
         <thead>
         <tr>
             <th>编号</th>
@@ -138,16 +138,30 @@
             <th>处理</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tableContents">
         <tr>
             <?php
                 foreach ($order_info as $row) {
                     echo "<tr>";
-                    foreach($row as $k => $v) {
-                        echo "<td>";
-                        echo "$v" . "";
-                        echo "</td>";
-                    }
+                    //foreach($row as $k => $v) {
+                    //    echo "<td>";
+                    //    echo "$v" . "";
+                    //    echo "</td>";
+                    //}
+                    echo "<td>" . $row['order_id'] . "</td>";
+                    echo "<td>" . $row['type'] . "</td>";
+                    echo "<td>" . $row['title'] . "</td>";
+                    echo "<td>" . $row['customer_id'] . "</td>";
+                    echo "<td>" . $row['goods_id'] . "</td>";
+                    echo "<td>" . $row['goods_name'] . "</td>";
+                    echo "<td>" . $row['goods_count'] . "</td>";
+                    echo "<td>" . $row['amountofmoney'] . "</td>";
+                    echo "<td>" . $row['logis_id'] . "</td>";
+                    echo "<td>" . $row['handler'] . "</td>";
+                    echo "<td>" . $row['start_time'] . "</td>";
+                    echo "<td>" . $row['update_time'] . "</td>";
+                    echo "<td>" . $row['end_time'] . "</td>";
+                    echo "<td>" . $row['status'] . "</td>";
                     $select_id = "item".$row['order_id'];
                     echo "<td>";
                     echo "<select id='$select_id' class='selectpicker'>";
@@ -165,29 +179,6 @@
         </tr>
         </tbody>
     </table>
-    <ul class="pagination pagination-sm" style="padding-bottom: 0px;">
-        <li>
-             <a href="#">Prev</a>
-        </li>
-        <li>
-             <a href="#">1</a>
-        </li>
-        <li>
-             <a href="#">2</a>
-        </li>
-        <li>
-             <a href="#">3</a>
-        </li>
-        <li>
-             <a href="#">4</a>
-        </li>
-        <li>
-             <a href="#">5</a>
-        </li>
-        <li>
-             <a href="#">Next</a>
-        </li>
-    </ul>
 </div>
 
 <script>
@@ -218,7 +209,42 @@ function commit_new_order() {
             logis_info: logis_info,
         },
         success: function (data) {
-            alert('[成功]新增交易: ' + data);
+            var jsonObj = JSON.parse(data);
+            var tableData = jsonObj.data;
+            alert('[成功]新增订单: ' + jsonObj.code);
+            var row = tableData[0];
+            console.log(data);
+            // 根据order_id 获取 select_id
+            var select_id = "item" + row.order_id;
+            html = "<tr>" +
+            "<td>" + row.order_id + "</td>" +
+            "<td>" + row.type + "</td>" +
+            "<td>" + row.title + "</td>" +
+            "<td>" + row.customer_id + "</td>" +
+            "<td>" + row.goods_id + "</td>" +
+            "<td>" + row.goods_name + "</td>" +
+            "<td>" + row.goods_count + "</td>" +
+            "<td>" + row.amountofmoney + "</td>" +
+            "<td>" + row.logis_id + "</td>" +
+            "<td>" + row.handler + "</td>" +
+            "<td>" + row.start_time + "</td>" +
+            "<td>" + row.update_time + "</td>" +
+            "<td>" + row.end_time + "</td>" +
+            "<td>" + row.status + "</td>" +
+            "<td>" +
+                "<select id='" + select_id + "' class='selectpicker'>" +
+                    "<option>采购申请</option>" +
+                    "<option>上架</option>" +
+                    "<option>下架</option>" +
+                    "<option>修改</option>" +
+                    "<option>删除</option>" +
+                "</select>" +
+            "</td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
+            "</td>" +
+            "</tr>";
+            $(html).prependTo("#tableContents:first");//将新数据填充到table
         },
         error: function(data) {
             console.log('Error: ' + data);
@@ -246,6 +272,8 @@ function search_order(orderId, handler, customerName, goodsId) {
             handler: m_handler,
             customer_name: m_customerName,
             goods_id: m_goodsId,
+            page: 1,
+            rows: 10,
         },
         success: function (data) {
             alert('[成功]搜索成功: ' + data);
@@ -260,9 +288,9 @@ function search_order(orderId, handler, customerName, goodsId) {
                 var t_type = row.type;
                 var t_title = row.title;
                 var t_customer_id = row.customer_id;
-                var t_good_id = row.good_id;
-                var t_good_name = row.good_name;
-                var t_good_count = row.good_count;
+                var t_goods_id = row.goods_id;
+                var t_goods_name = row.goods_name;
+                var t_goods_count = row.goods_count;
                 var t_amountofmoney = row.amountofmoney;
                 var t_logis_id = row.logis_id;
                 var t_handler = row.handler;
@@ -277,9 +305,9 @@ function search_order(orderId, handler, customerName, goodsId) {
                 "<td>" + t_type + "</td>" +
                 "<td>" + t_title + "</td>" +
                 "<td>" + t_customer_id + "</td>" +
-                "<td>" + t_good_id + "</td>" +
-                "<td>" + t_good_name + "</td>" +
-                "<td>" + t_good_count + "</td>" +
+                "<td>" + t_goods_id + "</td>" +
+                "<td>" + t_goods_name + "</td>" +
+                "<td>" + t_goods_count + "</td>" +
                 "<td>" + t_amountofmoney + "</td>" +
                 "<td>" + t_logis_id + "</td>" +
                 "<td>" + t_handler + "</td>" +
