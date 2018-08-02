@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-07-31 09:16:28
+Date: 2018-08-02 16:11:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -73,24 +73,31 @@ CREATE TABLE `customer` (
 -- ----------------------------
 DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
-  `goods_id` varchar(128) NOT NULL,
-  `goods_name` varchar(128) NOT NULL COMMENT '商品名称，如：苹果',
-  `kind` varchar(32) NOT NULL COMMENT '商品种类，如：水果',
-  `detail` varchar(1000) DEFAULT '' COMMENT '商品详细信息',
-  `type` varchar(32) DEFAULT '库存商品' COMMENT '商品类型，其他，例如：需求商品,未上架，已下架',
-  `handler` varchar(32) DEFAULT '义成' COMMENT '操作人，填写员工姓名',
-  `start_time` datetime DEFAULT NULL COMMENT '第一次录入时间',
-  `update_date` datetime DEFAULT NULL COMMENT '最后一次操作时间',
-  `status` varchar(32) DEFAULT '' COMMENT '当前记录状态',
-  `del` int(11) DEFAULT '0' COMMENT '是否删除',
+  `goods_id` bigint(128) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_name` varchar(128) NOT NULL DEFAULT '' COMMENT '商品名称，如：苹果',
+  `kind` varchar(32) NOT NULL DEFAULT '' COMMENT '商品种类，如：水果',
+  `detail` varchar(1000) NOT NULL DEFAULT '' COMMENT '商品详细信息',
+  `type` varchar(32) NOT NULL DEFAULT '库存商品' COMMENT '商品类型，其他，例如：需求商品,未上架，已下架',
+  `handler_id` int(11) NOT NULL DEFAULT '0' COMMENT '操作员ID',
+  `handler` varchar(32) NOT NULL DEFAULT '义成' COMMENT '操作人，填写员工姓名',
+  `start_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '第一次录入时间',
+  `status` varchar(32) NOT NULL DEFAULT '' COMMENT '当前记录状态',
+  `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次操作时间',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8 COMMENT='【商品】商品种类表';
 
 -- ----------------------------
 -- Records of goods
 -- ----------------------------
-INSERT INTO `goods` VALUES ('B123', '苹果', '食品', '山东水晶红富士', '未上架', '义成', '2018-07-11 10:00:01', '2018-07-11 10:00:01', '正常', '0');
-INSERT INTO `goods` VALUES ('B456', '铅笔', '文具', '日本进口', '已上架', '义成', '2018-07-11 11:00:01', '2018-07-11 11:00:01', '正常', '0');
+INSERT INTO `goods` VALUES ('1', '铅笔', '文具', '日本进口', '已上架', '0', '义成', '2018-07-11 11:00:01', '正常', '0', '2018-07-28 14:22:51');
+INSERT INTO `goods` VALUES ('123', '苹果', '食品', '山东水晶红富士', '未上架', '0', '义成', '2018-07-11 10:00:01', '正常', '0', '2018-07-28 14:22:49');
+INSERT INTO `goods` VALUES ('124', '1212121', '电脑耗材', '121212', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:24:28');
+INSERT INTO `goods` VALUES ('125', '1212121', '电脑耗材', '121212', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:24:37');
+INSERT INTO `goods` VALUES ('126', 'sdfdsf', '食品', 'sdfsdf', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:25:04');
+INSERT INTO `goods` VALUES ('127', 'sdfdsf', '食品', 'sdfsdf', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:35:28');
+INSERT INTO `goods` VALUES ('128', 'sdfdsf', '食品', 'sdfsdf', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:35:50');
+INSERT INTO `goods` VALUES ('129', '第三方', '食品', '萨芬的说法', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:36:31');
 
 -- ----------------------------
 -- Table structure for nav
@@ -149,7 +156,7 @@ CREATE TABLE `orders` (
   `end_date` date NOT NULL DEFAULT '1970-01-01' COMMENT '结束日期',
   `status` varchar(32) NOT NULL DEFAULT '' COMMENT '订单当前状态',
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除订单',
-  `update_time` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
+  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
   PRIMARY KEY (`order_id`),
   KEY `end_time` (`end_time`),
   KEY `end_date` (`end_date`)

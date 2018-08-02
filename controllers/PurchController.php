@@ -9,6 +9,7 @@
 
 namespace app\controllers;
 
+use app\service\goods\GoodsService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -26,7 +27,6 @@ class PurchController extends Controller
     public function actionPurchGoods()
     {
         $request = Yii::$app->request;
-        $id = Yii::$app->user->id;
         $isGuest = Yii::$app->user->isGuest;
         if ($isGuest) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -36,87 +36,54 @@ class PurchController extends Controller
             ];
             return $ret;
         }
+        $service = new GoodsService();
         if ($request->isAjax) {
             // 用于测试显示界面(这里需要修改)
             if ($request->isGet) {
-                // ==============这里需要替换数据=======================
-                $data = [
-                    "goods_info" => [
-                        [
-                            'goods_id' => 'B123',
-                            'goods_name' => '苹果',
-                            'kind' => '食品',
-                            'detail' => '山东水晶红富士',
-                            'type' => '未上架',
-                            'handler' => '义成',
-                            'start_time' => '2018-07-27 00:00:00',
-                            'update_time' => '2018-07-27 00:00:00',
-                            'status' => '正常',
-                        ],
-                        [
-                            'goods_id' => 'B456',
-                            'goods_name' => '铅笔',
-                            'kind' => '文具',
-                            'detail' => '日本进口',
-                            'type' => '已上架',
-                            'handler' => '义成',
-                            'start_time' => '2018-07-27 00:00:00',
-                            'update_time' => '2018-07-27 00:00:00',
-                            'status' => '正常',
-                        ]
-                    ],
+                $page = $this->R('page');
+                $rows = $this->R('rows');
+                if (!$page) {
+                    $page = 1;
+                }
+                if (!$rows) {
+                    $rows = 50;
+                }
+                $input = [
+                    'page' => $page,
+                    'rows' => $rows
                 ];
-                return $this->renderAjax('purch-goods', $data);
+                $data = $service->getGoodsInfo($input);
+                return $this->renderAjax('purch-goods',
+                    [
+                        'goods_info' => $data
+                    ]
+                );
             } elseif ($request->isPost) {
                 // 订单详情界面上传的数据
                 $action = $request->post('action');
                 if ($action === 'new_goods') {  // 新建订单动作
-                    $goods_name = $request->post('goods_name');
-                    $kind = $request->post('kind');
-                    $type = $request->post('type');
-                    // 插入数据库前，需要后台判断当前用户是谁，获取用户名
-                    $handler = '义成';
-                    // 插入数据库钱，需要根据后台获取当前时间，新建订单则更新start_time、update_time字段
-                    $start_time = '2018-07-27 00:00:00';
-                    $status = $request->post('status');
-                    $detail = $request->post('detail');
                     Yii::$app->response->format = Response::FORMAT_JSON;
-                    //============后端替换数据=========================
-                    $ret = [
-                        'code' => 0,
-                        'data' => [
-                            'goods_id' => 999,  // ======这里写死用于测试新插入
-                            'goods_name' => $goods_name,
-                            'kind' => $kind,
-                            'detail' => $detail,
-                            'type' => $type,
-                            'handler' => $handler,
-                            'start_time' => $start_time,
-                            'update_date' => $start_time,
-                            'status' => $status,
-                        ],
-                    ];
-                    //================================================
+                    $input = $this->R();
+                    $ret = $service->addGoods($input);
                     return $ret;
                 } elseif ($action === 'search_goods') { // 搜索订单提交
                     //========需要后期替换数据==============
-                    $search_test = [
-                        'goods_id' => 'B99999',
-                        'goods_name' => '横幅',
-                        'kind' => '文具',
-                        'detail' => '端午节活动筹备',
-                        'type' => '已上架',
-                        'handler' => '义成',
-                        'start_time' => '2018-07-27 00:00:00',
-                        'update_time' => '2018-07-27 00:00:00',
-                        'status' => '正常',
-                    ];
+                    $input = $this->R();
+                    $page = $this->R('page');
+                    $rows = $this->R('rows');
+                    if (!$page) {
+                        $input['page'] = 1;
+                    }
+                    if (!$rows) {
+                        $input['rows'] = 50;
+                    }
+                    $data = $service->getGoodsInfo($input);
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $data = [
                         'code' => 0,
-                        'data' => [
-                            $search_test,
-                        ],
+                        'data' => $data,
+                        'page' => $page,
+                        'rows' => $rows
                     ];
                     return $data;
                 } elseif ($action === 'commit_handle') {
@@ -234,7 +201,7 @@ class PurchController extends Controller
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $data = [
                         'code' => 0,
-                        'data' => [$search_test, ],
+                        'data' => [$search_test,],
                     ];
                     return $data;
                 } elseif ($action === 'commit_handle') {

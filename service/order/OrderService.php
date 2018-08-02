@@ -52,10 +52,10 @@ class OrderService
         $orderID = $ordersDao->getAttribute('order_id');
         $newData = $this->getOrdersInfo(['order_id' => $orderID]);
         if ($res) {
-            return $newData;
+            return ['code' => 0, 'data' => $newData];
         } else {
             \Yii::info('add orders error.', __FUNCTION__);
-            return $newData;
+            return ['code' => -1, 'msg' => 'add orders error.'];
         }
     }
 
@@ -132,7 +132,7 @@ class OrderService
                     @counter :=@counter + 1 AS `rank`,
                     `handler_id` AS `staff_id`,
                     `handler` AS `staff_name`,
-                    sum(good_count) deal_count,
+                    sum(goods_count) deal_count,
                     sum(amountofmoney) deal_money,
                     MAX(end_time) last_deal_time';
         $dDate = $ordersDao->find()
@@ -164,7 +164,7 @@ class OrderService
         $select = '	@area AS `area`,
                     `handler_id` AS `staff_id`,
                     `handler` AS `staff_name`,
-                    sum(good_count) deal_count,
+                    sum(goods_count) deal_count,
                     sum(amountofmoney) deal_money,
                     MAX(end_time) last_deal_time';
         $activeQuery = $ordersDao->find();
