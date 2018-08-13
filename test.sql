@@ -156,7 +156,7 @@ CREATE TABLE `orders` (
   `end_date` date NOT NULL DEFAULT '1970-01-01' COMMENT '结束日期',
   `status` varchar(32) NOT NULL DEFAULT '' COMMENT '订单当前状态',
   `del` int(11) NOT NULL DEFAULT '0' COMMENT '是否删除订单',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
+  `update_time` timestamp NOT NULL DEFAULT '1970-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最后更新时间',
   PRIMARY KEY (`order_id`),
   KEY `end_time` (`end_time`),
   KEY `end_date` (`end_date`)
