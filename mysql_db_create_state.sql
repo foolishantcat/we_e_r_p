@@ -2,7 +2,7 @@
 * @Author: caoyicheng_cd
 * @Date:   2018-06-11 22:12:38
 * @Last Modified by:   caoyicheng_cd
-* @Last Modified time: 2018-07-24 19:09:43
+* @Last Modified time: 2018-08-16 20:43:00
 */
 
 -------------------权限管理-------------------START
@@ -73,6 +73,7 @@ insert into nav values ('进销存系统', '订单管理', '销售榜单', 'item
 
 insert into nav values ('进销存系统', '采购管理', '商品物料', 'item', 1, 0, 'purch/pruch-goods','正常', 0);
 insert into nav values ('进销存系统', '采购管理', '办公设备', 'item', 1, 1, 'purch/purch-office', '正常', 0);
+insert into nav values ('进销存系统', '采购管理', '采购列表', 'item', 1, 2, 'purch/purch-list', '正常', 0);
 
 insert into nav values ('进销存系统', '仓库管理', '库存信息', 'item', 1, 0, 'reper/reper-stock', '正常', 0);
 insert into nav values ('进销存系统', '仓库管理', '仓库信息', 'item', 1, 1, 'reper/reper-info', '正常', 0);

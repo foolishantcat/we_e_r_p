@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-24 16:07:43
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-31 21:17:49
+ * @Last Modified time: 2018-08-16 20:35:04
  */
 ?>
 <div id="contentGoods" class="container" style="width: 100%;">
@@ -128,7 +128,6 @@
         </tr>
         </thead>
         <tbody id="tableContents">
-        <tr>
             <?php
                 foreach ($goods_info as $row) {
                     echo "<tr>";
@@ -157,7 +156,6 @@
                     echo "</tr>";
                 }
             ?>
-        </tr>
         </tbody>
     </table>
 </div>

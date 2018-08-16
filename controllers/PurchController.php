@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 20:10:54
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-31 10:15:05
+ * @Last Modified time: 2018-08-16 20:46:27
  */
 
 namespace app\controllers;
@@ -225,4 +225,138 @@ class PurchController extends Controller
         }
     }
     // ------------------测试用-----------------
+
+    public function actionPurchList()
+    {
+        $request = Yii::$app->request;
+        $id = Yii::$app->user->id;
+        $isGuest = Yii::$app->user->isGuest;
+        if ($isGuest) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $ret = [
+                'code' => -1,
+                'msg' => '未登录，请先登录',
+            ];
+            return $ret;
+        }
+        if ($request->isAjax) {
+            // 用于测试显示界面(这里需要修改)
+            if ($request->isGet) {
+                // ==============这里需要替换数据=======================
+                $data = [
+                    "purch_info" => [
+                        [
+                            'purch_type' => '商品物料',
+                            'purch_id' => 'P123',
+                            'title' => '国庆节采购苹果计划',
+                            'goods_id' => 'B123',
+                            'goods_name' => '苹果',
+                            'kind' => '水果',
+                            'counts' => 100,
+                            'unit_price' => 8,
+                            'amountofmoney' => 85,
+                            'use' => '国庆节公司发放福利',
+                            'process' => '财务审批中',
+                            'detail' => '山东水晶红富士',
+                            'proposer' => '义成',
+                            'approver' => '凯波',
+                            'financer' => '张飞',
+                            'purchaser' => 'dd',
+                            'start_time' => '2018-07-27 00:00:00',
+                            'update_time' => '2018-07-27 00:00:00',
+                            'status' => '正常',
+                        ],
+                        [
+                            'purch_type' => '办公设备',
+                            'purch_id' => 'P456',
+                            'title' => '苹果电脑采购',
+                            'goods_id' => 'D123',
+                            'goods_name' => 'Mac笔记本',
+                            'kind' => '电子设备',
+                            'counts' => 1,
+                            'unit_price' => 10000,
+                            'amountofmoney' => 10000,
+                            'use' => '总经理办公室使用',
+                            'process' => '审批不通过',
+                            'detail' => '山东水晶红富士',
+                            'proposer' => '义成',
+                            'approver' => '凯波',
+                            'financer' => '张飞',
+                            'purchaser' => 'dd',
+                            'start_time' => '2018-07-27 00:00:00',
+                            'update_time' => '2018-07-27 00:00:00',
+                            'status' => '正常',
+                        ],
+                    ],
+                ];
+                return $this->renderAjax('purch-list', $data);
+            } elseif ($request->isPost) {
+                $action = $request->post('action');
+                if ($action === 'search_purch') {  // 搜索采购单
+                    $goods_name = $request->post('office_name');
+                    $kind = $request->post('kind');
+                    $attr = $request->post('attr');
+                    // 插入数据库前，需要后台判断当前用户是谁，获取用户名
+                    $handler = '义成';
+                    // 插入数据库钱，需要根据后台获取当前时间，新建订单则更新start_time、update_time字段
+                    $start_time = '2018-07-27 00:00:00';
+                    $status = '正常';
+                    $detail = $request->post('detail');
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    //============后端替换数据=========================
+                    $ret = [
+                        'code' => 0,
+                        'data' => [
+                            'office_id' => 999,  // ======这里写死用于测试新插入
+                            'office_name' => $goods_name,
+                            'kind' => $kind,
+                            'attr' => $attr,
+                            'detail' => $detail,
+                            'handler' => $handler,
+                            'start_time' => $start_time,
+                            'update_time' => $start_time,
+                            'status' => $status,
+                        ],
+                    ];
+                    //================================================
+                    return $ret;
+                } elseif ($action === 'search_office') { // 搜索订单提交
+                    //========需要后期替换数据==============
+                    $search_test = [
+                        'office_id' => 'B99999',
+                        'office_name' => '桃子',
+                        'kind' => '食品',
+                        'attr' => '消耗品',
+                        'detail' => '生日会准备',
+                        'handler' => '义成',
+                        'start_time' => '2018-07-27 00:00:00',
+                        'update_time' => '2018-07-27 00:00:00',
+                        'status' => '正常'
+                    ];
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    $data = [
+                        'code' => 0,
+                        'data' => [$search_test,],
+                    ];
+                    return $data;
+                } elseif ($action === 'commit_handle') {
+                    $office_id = $request->post('office_id');
+                    $handle = $request->post('handle');
+                    // =============此处按照提交的handle动作，去判定应该执行什么动作
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    $ret = [
+                        'code' => 0,
+                        'data' => "$office_id" . "$handle",
+                    ];
+                    return $ret;
+                } else {
+                    return '未知的请求动作';
+                }
+            } else {
+                return '未知的请求类型';
+            }
+        } else {
+            return $this->render('welcome');
+        }
+    }
 }

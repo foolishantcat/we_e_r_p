@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-26 15:14:32
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-31 21:18:29
+ * @Last Modified time: 2018-08-16 20:35:19
  */
 ?>
 <div id="contentPurch" class="container" style="width: 100%;">
@@ -145,7 +145,6 @@
         </tr>
         </thead>
         <tbody id="tableContents">
-        <tr>
             <?php
                 foreach ($office_info as $row) {
                     echo "<tr>";
@@ -169,7 +168,6 @@
                     echo "</tr>";
                 }
             ?>
-        </tr>
         </tbody>
     </table>
 </div>

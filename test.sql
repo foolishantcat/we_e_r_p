@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : loc
-Source Server Version : 50718
-Source Host           : 192.168.8.128:3306
-Source Database       : we_erp
+Source Server         : ethan_mysql
+Source Server Version : 50722
+Source Host           : 192.168.159.132:3306
+Source Database       : test
 
 Target Server Type    : MYSQL
-Target Server Version : 50718
+Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-08-02 16:11:05
+Date: 2018-08-16 21:40:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for auth
+-- Table structure for `auth`
 -- ----------------------------
 DROP TABLE IF EXISTS `auth`;
 CREATE TABLE `auth` (
@@ -36,7 +36,7 @@ CREATE TABLE `auth` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for customer
+-- Table structure for `customer`
 -- ----------------------------
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
@@ -69,7 +69,7 @@ CREATE TABLE `customer` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for goods
+-- Table structure for `goods`
 -- ----------------------------
 DROP TABLE IF EXISTS `goods`;
 CREATE TABLE `goods` (
@@ -100,7 +100,7 @@ INSERT INTO `goods` VALUES ('128', 'sdfdsf', '食品', 'sdfsdf', '新建', '0', 
 INSERT INTO `goods` VALUES ('129', '第三方', '食品', '萨芬的说法', '新建', '0', '义成', '1970-01-01 00:00:00', '正常', '0', '2018-07-28 14:36:31');
 
 -- ----------------------------
--- Table structure for nav
+-- Table structure for `nav`
 -- ----------------------------
 DROP TABLE IF EXISTS `nav`;
 CREATE TABLE `nav` (
@@ -126,7 +126,6 @@ INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '订单详情', 'it
 INSERT INTO `nav` VALUES ('进销存系统', '订单管理', '销售榜单', 'item', '1', '1', 'order/order-rank', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '商品物料', 'item', '1', '0', 'purch/purch-goods', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '办公设备', 'item', '1', '1', 'purch/purch-office', '正常', '0');
-INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '采购列表', 'item', '1', '2', 'purch/purch-list', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '库存信息', 'item', '1', '0', 'reper/reper-stock', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '仓库信息', 'item', '1', '1', 'reper/reper-info', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '领用信息', 'item', '1', '2', 'reper/reper-lend', '正常', '0');
@@ -134,9 +133,10 @@ INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '出入库申请', 
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '退料管理', 'item', '1', '4', 'reper/reper-return', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '仓库管理', '废料管理', 'item', '1', '5', 'reper/reper-rubbish', '正常', '0');
 INSERT INTO `nav` VALUES ('进销存系统', '待办事项', '流程审批', 'item', '1', '0', 'jxcitem/flow-approve', '正常', '0');
+INSERT INTO `nav` VALUES ('进销存系统', '采购管理', '采购列表', 'item', '1', '2', 'purch/purch-list', '正常', '0');
 
 -- ----------------------------
--- Table structure for orders
+-- Table structure for `orders`
 -- ----------------------------
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
@@ -171,7 +171,7 @@ INSERT INTO `orders` VALUES ('7', '1', '', '', '', '', '150', '0.00', '', '2', '
 INSERT INTO `orders` VALUES ('8', '', '', '', '', '', '250', '0.00', '', '3', 'sd', '2018-07-30 00:00:00', '2018-07-31 00:00:00', '1970-01-01', '', '0', '2018-07-26 10:48:53');
 
 -- ----------------------------
--- Table structure for trade
+-- Table structure for `trade`
 -- ----------------------------
 DROP TABLE IF EXISTS `trade`;
 CREATE TABLE `trade` (

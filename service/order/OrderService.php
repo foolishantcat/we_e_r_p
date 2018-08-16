@@ -65,8 +65,6 @@ class OrderService
      */
     public function getOrderRank()
     {
-        \Yii::$app->db->createCommand('SET @counter = 0;')->query();
-        \Yii::$app->db->createCommand('SET @counter = 0;')->query();
         $dayEnd = date('Y-m-d', time()) . ' 23:59:59';
         $today = date('Y-m-d', time());
         $dOrderRank = $this->orderRank($today, $dayEnd, '当天');
@@ -77,7 +75,7 @@ class OrderService
             $wDay = date('Y-m-d', strtotime('-6 day'));
         }
         $wOrderRank = $this->orderRank($wDay, $dayEnd, '本周');
-        $dayMonth = date('Y-m', time()) . '-1';
+        $dayMonth = date('Y-m', time()) . '-01';
         $mOrderRank = $this->orderRank($dayMonth, $dayEnd, '本月');
         $selectStaffID = $dOrderRank[0]['staff_id'];
         $rankInfo = $this->getRankInfo(['staff_id' => $selectStaffID]);

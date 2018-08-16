@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 19:59:03
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 21:14:46
+ * @Last Modified time: 2018-08-16 20:37:39
  */
 
 namespace app\controllers;
@@ -101,7 +101,7 @@ class OrderController extends Controller
             // 用于测试显示界面(这里需要修改)
             if ($request->isGet) {
                 $data = $service->getOrderRank();
-                return $data = $this->renderAjax('order-rank', $data['data']);
+                return $data = $this->renderAjax('order-rank', $data);
             } elseif ($request->isPost) {
                 $action = $request->post('action');
                 if ($action === 'search_rank') {

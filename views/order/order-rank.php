@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-06 20:09:47
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-26 21:18:33
+ * @Last Modified time: 2018-08-16 19:03:33
  */
 ?>
 <div class="container" style="width: 100%;">
@@ -145,33 +145,23 @@
             ?>
         </tbody>
     </table>
-    <ul class="pagination pagination-sm" style="position:relative;float: center;">
-        <li>
-             <a href="#">Prev</a>
-        </li>
-        <li>
-             <a href="#">1</a>
-        </li>
-        <li>
-             <a href="#">2</a>
-        </li>
-        <li>
-             <a href="#">3</a>
-        </li>
-        <li>
-             <a href="#">4</a>
-        </li>
-        <li>
-             <a href="#">5</a>
-        </li>
-        <li>
-             <a href="#">Next</a>
-        </li>
-    </ul>
 </div>
 
 <script>
-var req = new XMLHttpRequest();
+// 初始化界面
+$(document).ready(function(){
+    $('#rankTable').dataTable({
+        "paging": true,
+        "pageLength": 10,
+        "pagingType": "full_numbers",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "processing": true,
+        "searching": true,
+        "stateSave": true,
+        "ordering": true,
+    });
+});
+
 function search_rank(searchOption, staffName, staffId) {
     //目前只支持index.php
     var r_url = "index.php?r=" + "order/order-rank";
