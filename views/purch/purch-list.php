@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-08-13 21:10:10
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-08-16 21:38:47
+ * @Last Modified time: 2018-08-19 17:05:53
  */
 ?>
 
@@ -72,7 +72,7 @@
             <th>金额</th>
             <th>用途</th>
             <th>采购状态</th>
-            <th>备注</th>
+            <th>所在仓库</th>
             <th>申请人</th>
             <th>审批人</th>
             <th>财务</th>
@@ -85,7 +85,8 @@
         <tbody id="tableContents">
             <?php
                 foreach ($purch_info as $row) {
-                    echo "<tr>";
+                    $purch_id = $row['purch_id'];
+                    echo "<tr id='mtr$purch_id'>";
                     echo "<td>" . $row['purch_type'] . "</td>";
                     echo "<td>" . $row['purch_id'] . "</td>";
                     echo "<td>" . $row['title'] . "</td>";
@@ -97,21 +98,19 @@
                     echo "<td>" . $row['amountofmoney'] . "</td>";
                     echo "<td>" . $row['use'] . "</td>";
                     echo "<td>" . $row['process'] . "</td>";
-                    echo "<td>" . $row['detail'] . "</td>";
+                    echo "<td>" . $row['repertory'] . "</td>";
                     echo "<td>" . $row['proposer'] . "</td>";
                     echo "<td>" . $row['approver'] . "</td>";
                     echo "<td>" . $row['financer'] . "</td>";
                     echo "<td>" . $row['purchaser'] . "</td>";
                     echo "<td>" . $row['start_time'] . "</td>";
                     echo "<td>" . $row['update_time'] . "</td>";
-                    $purch_id = $row['purch_id'];
-                    $fuck = '#ff9955';
                     echo "<td>";
                     echo "<form class='form-horizontal'>";
                     echo "<div class='contorl-group' style='white-space:nowrap'>";
-                    echo "<span class='spanbt glyphicon glyphicon-edit' aria-hidden='true' style='margin:5px;}' onclick='modify_purch($purch_id)'></span>";
-                    echo "<span class='spanbt glyphicon glyphicon-remove' aria-hidden='true' style='margin:5px;' onclick='delete_purch($purch_id)'></span>";
-                    echo "<span class='spanbt glyphicon glyphicon-send' aria-hidden='true' style='margin:5px;' onclick='commit_handle($purch_id)'></span>";
+                    echo "<span id='modifybt$purch_id' class='spanbt glyphicon glyphicon-edit' aria-hidden='true' style='margin:5px;}' onclick='modify_purch(this)'></span>";
+                    echo "<span id='deletebt$purch_id' class='spanbt glyphicon glyphicon-remove' aria-hidden='true' style='margin:5px;' onclick='delete_purch(this)'></span>";
+                    echo "<span id='nextbt$purch_id' class='spanbt glyphicon glyphicon-send' aria-hidden='true' style='margin:5px;' onclick='next_process(this)'></span>";
                     echo "</div>";
                     echo "</form>";
                     echo "</td>";
@@ -120,6 +119,84 @@
             ?>
         </tbody>
     </table>
+
+    <div class="modal fade" id="nextProcess">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">采购单流转</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- 模态框主体 -->
+                    <div class="modal-body">
+                        <div class="alert alert-primary" role="alert">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="title" class="col-sm-2 control-label">标题*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="title" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="purchId" class="col-sm-2 control-label">采购单ID*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="purchId" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goodsId" class="col-sm-2 control-label">商品ID*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="goodsId" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goodsName" class="col-sm-2 control-label">商品名称*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="goodsName" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goodsCount" class="col-sm-2 control-label">商品数量*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="goodsCount" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amountOfMoney" class="col-sm-2 control-label">商品总价</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="amountOfMoney" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="putInTime" class="col-sm-2 control-label">仓库选择</label>
+                                    <div class="col-sm-10">
+                                        <select id='reperSelect' class='selectpicker'>
+                                        <?php
+                                            foreach ($reper_info as $key => $value) {
+                                                echo "<option>$value</option>";
+                                            }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="putInTime" class="col-sm-2 control-label">入库时间</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="putInTime">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ask_put_in()">申请入库</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
 <script>
@@ -137,10 +214,7 @@ $(document).ready(function(){
     });
 });
 
-function show(color) {
-    $(this).attr("color", color);
-}
-
+// 鼠标划过变色
 $(".spanbt").mouseover(function(){
   $(this).css({
       "border-color":"red",
@@ -152,6 +226,196 @@ $(".spanbt").mouseover(function(){
       "color": ""
   });
 });
+
+// 自动填充数值
+function next_process(obj) {
+    var purch_id = $(obj).attr("id").split("nextbt")[1];
+    var tr_id = 'mtr' + purch_id;
+    console.log(tr_id);
+    var tr_obj = document.getElementById(tr_id);
+    var title = tr_obj.children[2].innerHTML;
+    var purch_id = tr_obj.children[1].innerHTML;
+    var goods_id = tr_obj.children[3].innerHTML;
+    var goods_name = tr_obj.children[4].innerHTML;
+    var goods_count = tr_obj.children[6].innerHTML;
+    var amount_of_money = tr_obj.children[8].innerHTML;
+    $("#nextProcess").modal("show");
+    var inputs = document.getElementById("nextProcess").getElementsByTagName("input");
+    inputs[0].value = title;
+    inputs[1].value = purch_id;
+    inputs[2].value = goods_id;
+    inputs[3].value = goods_name;
+    inputs[4].value = goods_count;
+    inputs[5].value = amount_of_money;
+}
+
+function ask_put_in() {
+    //目前只支持index.php
+    var r_url = "index.php?r=" + "purch/purch-list";
+    console.log(r_url);
+    var m_purch_id = document.getElementById("nextProcess").getElementsByTagName("input")[1].value;
+    console.log("purch_id: " + m_purch_id);
+    $.ajax({
+        type: 'POST',
+        url: r_url,
+        dataType: 'HTML',
+        data: {
+            action: 'ask_put_in',
+            purch_id: m_purch_id,
+        },
+        success: function (data) {
+            var jsonObj = JSON.parse(data);
+            var data = jsonObj.data;
+            alert('[成功]入库成功: ' + data);
+        },
+        error: function(data) {
+            console.log('Error: ' + data);
+            alert('[失败]入库失败');
+        }
+    });
+}
+
+function modify_purch(obj) {
+    var r_url = "index.php?r=" + "purch/purch-list";
+    console.log(r_url);
+    var purch_id = $(obj).attr("id").split("modifybt")[1];
+    var tr_id = 'mtr' + purch_id;
+    console.log(tr_id);
+    var tr_obj = document.getElementById(tr_id);
+    var m_purch_id = tr_obj.children[1].innerHTML;
+    $.ajax({
+        type: 'POST',
+        url: r_url,
+        dataType: 'HTML',
+        data: {
+            action: 'modify_purch',
+            purch_id: m_purch_id,
+        },
+        success: function (data) {
+            alert('[成功]搜索成功: ' + data);
+            // 解析json，然后替换前端
+            var jsonObj = JSON.parse(data);
+            var tableData = jsonObj.data;
+            $("#goodsTable tr:gt(0)").remove();//第一行是table的表格头不需清除
+            var html = '';
+            for(var i=0; i < tableData.length; i++){
+                var row = tableData[i];
+                var t_goods_id = row.goods_id;
+                var t_goods_name = row.goods_name;
+                var t_type = row.type;
+                var t_kind = row.kind;
+                var t_detail = row.detail;
+                var t_status = row.status;
+                var t_handler = row.handler;
+                var t_start_time = row.start_time;
+                var t_update_time = row.update_time;
+                // 根据order_id 获取 select_id
+                var select_id = "item" + t_goods_id;
+                html += "<tr>" +
+                "<td>" + t_goods_id + "</td>" +
+                "<td>" + t_goods_name + "</td>" +
+                "<td>" + t_kind + "</td>" +
+                "<td>" + t_detail + "</td>" +
+                "<td>" + t_type + "</td>" +
+                "<td>" + t_handler + "</td>" +
+                "<td>" + t_start_time + "</td>" +
+                "<td>" + t_update_time + "</td>" +
+                "<td>" + t_status + "</td>" +
+                "<td>" +
+                    "<select id='" + select_id + "' class='selectpicker'>" +
+                        "<option>采购申请</option>" +
+                        "<option>上架</option>" +
+                        "<option>下架</option>" +
+                        "<option>修改</option>" +
+                        "<option>删除</option>" +
+                    "</select>" +
+                "</td>" +
+                "<td>" +
+                    "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
+                "</td>" +
+                "</tr>";
+            }
+            $(html).appendTo("#tableContents:first");//将新数据填充到table
+        },
+        error: function(data) {
+            var jsonObj = JSON.parse(data);
+            var msg = jsonObj.msg;
+            alert('[失败]搜索失败: ' + msg);
+        }
+    });
+}
+
+// 删除当前记录
+function delete_purch(obj) {
+    var r_url = "index.php?r=" + "purch/purch-list";
+    console.log(r_url);
+    var purch_id = $(obj).attr("id").split("deletebt")[1];
+    var tr_id = 'mtr' + purch_id;
+    console.log(tr_id);
+    var tr_obj = document.getElementById(tr_id);
+    var title = tr_obj.children[2].innerHTML;
+    var m_purch_id = tr_obj.children[1].innerHTML;
+    $.ajax({
+        type: 'POST',
+        url: r_url,
+        dataType: 'HTML',
+        data: {
+            action: 'delete_purch',
+            purch_id: m_purch_id,
+        },
+        success: function (data) {
+            alert('[成功]搜索成功: ' + data);
+            // 解析json，然后替换前端
+            var jsonObj = JSON.parse(data);
+            var tableData = jsonObj.data;
+            $("#goodsTable tr:gt(0)").remove();//第一行是table的表格头不需清除
+            var html = '';
+            for(var i=0; i < tableData.length; i++){
+                var row = tableData[i];
+                var t_goods_id = row.goods_id;
+                var t_goods_name = row.goods_name;
+                var t_type = row.type;
+                var t_kind = row.kind;
+                var t_detail = row.detail;
+                var t_status = row.status;
+                var t_handler = row.handler;
+                var t_start_time = row.start_time;
+                var t_update_time = row.update_time;
+                // 根据order_id 获取 select_id
+                var select_id = "item" + t_goods_id;
+                html += "<tr>" +
+                "<td>" + t_goods_id + "</td>" +
+                "<td>" + t_goods_name + "</td>" +
+                "<td>" + t_kind + "</td>" +
+                "<td>" + t_detail + "</td>" +
+                "<td>" + t_type + "</td>" +
+                "<td>" + t_handler + "</td>" +
+                "<td>" + t_start_time + "</td>" +
+                "<td>" + t_update_time + "</td>" +
+                "<td>" + t_status + "</td>" +
+                "<td>" +
+                    "<select id='" + select_id + "' class='selectpicker'>" +
+                        "<option>采购申请</option>" +
+                        "<option>上架</option>" +
+                        "<option>下架</option>" +
+                        "<option>修改</option>" +
+                        "<option>删除</option>" +
+                    "</select>" +
+                "</td>" +
+                "<td>" +
+                    "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
+                "</td>" +
+                "</tr>";
+            }
+            $(html).appendTo("#tableContents:first");//将新数据填充到table
+        },
+        error: function(data) {
+            var jsonObj = JSON.parse(data);
+            var msg = jsonObj.msg;
+            alert('[失败]搜索失败: ' + msg);
+        }
+    });
+}
 
 function search_purchs(searchKind, purchId, goodsId, goodsName, goodsKind, handler) {
     //目前只支持index.php
@@ -227,34 +491,6 @@ function search_purchs(searchKind, purchId, goodsId, goodsName, goodsKind, handl
             var jsonObj = JSON.parse(data);
             var msg = jsonObj.msg;
             alert('[失败]搜索失败: ' + msg);
-        }
-    });
-}
-
-function commit_handle(obj) {
-    //目前只支持index.php
-    var r_url = "index.php?r=" + "purch/purch-list";
-    console.log(r_url);
-    var m_goods_id = obj.id.split('item')[1];
-    var m_handle = obj.value;
-    console.log(m_goods_id+"|"+m_handle);
-    $.ajax({
-        type: 'POST',
-        url: r_url,
-        dataType: 'HTML',
-        data: {
-            action: 'commit_handle',
-            goods_id: m_goods_id,
-            handle: m_handle,
-        },
-        success: function (data) {
-            var jsonObj = JSON.parse(data);
-            var data = jsonObj.data;
-            alert('[成功]搜索成功: ' + data);
-        },
-        error: function(data) {
-            console.log('Error: ' + data);
-            alert('[失败]搜索失败');
         }
     });
 }

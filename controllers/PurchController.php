@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 20:10:54
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-08-16 20:46:27
+ * @Last Modified time: 2018-08-19 17:05:11
  */
 
 namespace app\controllers;
@@ -257,7 +257,7 @@ class PurchController extends Controller
                             'amountofmoney' => 85,
                             'use' => '国庆节公司发放福利',
                             'process' => '财务审批中',
-                            'detail' => '山东水晶红富士',
+                            'repertory' => '',
                             'proposer' => '义成',
                             'approver' => '凯波',
                             'financer' => '张飞',
@@ -278,7 +278,7 @@ class PurchController extends Controller
                             'amountofmoney' => 10000,
                             'use' => '总经理办公室使用',
                             'process' => '审批不通过',
-                            'detail' => '山东水晶红富士',
+                            'repertory' => '',
                             'proposer' => '义成',
                             'approver' => '凯波',
                             'financer' => '张飞',
@@ -320,8 +320,9 @@ class PurchController extends Controller
                     ];
                     //================================================
                     return $ret;
-                } elseif ($action === 'search_office') { // 搜索订单提交
+                } elseif ($action === 'modify_purch') { // 修改采购单
                     //========需要后期替换数据==============
+                    $purch_id = $request->post('purch_id');
                     $search_test = [
                         'office_id' => 'B99999',
                         'office_name' => '桃子',
@@ -334,22 +335,33 @@ class PurchController extends Controller
                         'status' => '正常'
                     ];
                     Yii::$app->response->format = Response::FORMAT_JSON;
+                    // 这里需要返回修改后的数据给前端
                     $data = [
                         'code' => 0,
                         'data' => [$search_test,],
                     ];
                     return $data;
-                } elseif ($action === 'commit_handle') {
-                    $office_id = $request->post('office_id');
-                    $handle = $request->post('handle');
-                    // =============此处按照提交的handle动作，去判定应该执行什么动作
+                } elseif ($action === 'delete_purch') {     // 删除采购订单
+                    $purch_id = $request->post('purch_id');
                     Yii::$app->response->format = Response::FORMAT_JSON;
+                    // 此处返回删除的状态即可
                     $ret = [
                         'code' => 0,
                         'data' => "$office_id" . "$handle",
                     ];
                     return $ret;
-                } else {
+                } elseif ($action === 'ask_put_in') {   // 请求入库操作
+                    $purch_id = $request->post('purch_id');
+                    $repertory = $request->post('repertory');
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    // 请求入库失败，需要返回msg
+                    $ret = [
+                        'code' => 0,
+                        'data' => "",
+                    ];
+                    return $ret;
+                }
+                else {
                     return '未知的请求动作';
                 }
             } else {
