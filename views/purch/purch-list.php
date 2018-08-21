@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-08-13 21:10:10
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-08-19 17:05:53
+ * @Last Modified time: 2018-08-21 21:18:52
  */
 ?>
 
@@ -108,7 +108,7 @@
                     echo "<td>";
                     echo "<form class='form-horizontal'>";
                     echo "<div class='contorl-group' style='white-space:nowrap'>";
-                    echo "<span id='modifybt$purch_id' class='spanbt glyphicon glyphicon-edit' aria-hidden='true' style='margin:5px;}' onclick='modify_purch(this)'></span>";
+                    echo "<span id='modifybt$purch_id' class='spanbt glyphicon glyphicon-edit' aria-hidden='true' style='margin:5px;}' onclick='modify_process(this)'></span>";
                     echo "<span id='deletebt$purch_id' class='spanbt glyphicon glyphicon-remove' aria-hidden='true' style='margin:5px;' onclick='delete_purch(this)'></span>";
                     echo "<span id='nextbt$purch_id' class='spanbt glyphicon glyphicon-send' aria-hidden='true' style='margin:5px;' onclick='next_process(this)'></span>";
                     echo "</div>";
@@ -197,6 +197,85 @@
                 </div>
             </div>
         </div>
+
+            <div class="modal fade" id="modifyProcess">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">修改采购单</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- 模态框主体 -->
+                    <div class="modal-body">
+                        <div class="alert alert-primary" role="alert">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="title" class="col-sm-2 control-label">标题*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="title" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="purchId" class="col-sm-2 control-label">采购单ID*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="purchId" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goodsId" class="col-sm-2 control-label">商品ID*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="goodsId" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goodsName" class="col-sm-2 control-label">商品名称*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="goodsName" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="goodsCount" class="col-sm-2 control-label">商品数量*</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="goodsCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="amountOfMoney" class="col-sm-2 control-label">商品总价</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="amountOfMoney">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="putInTime" class="col-sm-2 control-label">仓库选择</label>
+                                    <div class="col-sm-10">
+                                        <select id='reperSelect' class='selectpicker'>
+                                        <?php
+                                            foreach ($reper_info as $key => $value) {
+                                                echo "<option>$value</option>";
+                                            }
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="putInTime" class="col-sm-2 control-label">入库时间</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="putInTime">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- 模态框底部 -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="modify_purch()">修改订单</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </div>
 
 <script>
@@ -227,7 +306,7 @@ $(".spanbt").mouseover(function(){
   });
 });
 
-// 自动填充数值
+// 点击“飞机”自动填充数值
 function next_process(obj) {
     var purch_id = $(obj).attr("id").split("nextbt")[1];
     var tr_id = 'mtr' + purch_id;
@@ -241,6 +320,28 @@ function next_process(obj) {
     var amount_of_money = tr_obj.children[8].innerHTML;
     $("#nextProcess").modal("show");
     var inputs = document.getElementById("nextProcess").getElementsByTagName("input");
+    inputs[0].value = title;
+    inputs[1].value = purch_id;
+    inputs[2].value = goods_id;
+    inputs[3].value = goods_name;
+    inputs[4].value = goods_count;
+    inputs[5].value = amount_of_money;
+}
+
+// 点击“编辑”自动填充数值
+function modify_process(obj) {
+    var purch_id = $(obj).attr("id").split("modifybt")[1];
+    var tr_id = 'mtr' + purch_id;
+    console.log(tr_id);
+    var tr_obj = document.getElementById(tr_id);
+    var title = tr_obj.children[2].innerHTML;
+    var purch_id = tr_obj.children[1].innerHTML;
+    var goods_id = tr_obj.children[3].innerHTML;
+    var goods_name = tr_obj.children[4].innerHTML;
+    var goods_count = tr_obj.children[6].innerHTML;
+    var amount_of_money = tr_obj.children[8].innerHTML;
+    $("#modifyProcess").modal("show");
+    var inputs = document.getElementById("modifyProcess").getElementsByTagName("input");
     inputs[0].value = title;
     inputs[1].value = purch_id;
     inputs[2].value = goods_id;
@@ -278,11 +379,11 @@ function ask_put_in() {
 function modify_purch(obj) {
     var r_url = "index.php?r=" + "purch/purch-list";
     console.log(r_url);
-    var purch_id = $(obj).attr("id").split("modifybt")[1];
-    var tr_id = 'mtr' + purch_id;
+    var m_purch_id = document.getElementById("modifyProcess").getElementsByTagName("input")[1].value;
+    var tr_id = 'mtr' + m_purch_id;
     console.log(tr_id);
-    var tr_obj = document.getElementById(tr_id);
-    var m_purch_id = tr_obj.children[1].innerHTML;
+    //var tr_obj = document.getElementById(tr_id);
+    //var m_purch_id = tr_obj.children[1].innerHTML;
     $.ajax({
         type: 'POST',
         url: r_url,
@@ -292,55 +393,43 @@ function modify_purch(obj) {
             purch_id: m_purch_id,
         },
         success: function (data) {
-            alert('[成功]搜索成功: ' + data);
             // 解析json，然后替换前端
             var jsonObj = JSON.parse(data);
             var tableData = jsonObj.data;
-            $("#goodsTable tr:gt(0)").remove();//第一行是table的表格头不需清除
-            var html = '';
-            for(var i=0; i < tableData.length; i++){
-                var row = tableData[i];
-                var t_goods_id = row.goods_id;
-                var t_goods_name = row.goods_name;
-                var t_type = row.type;
-                var t_kind = row.kind;
-                var t_detail = row.detail;
-                var t_status = row.status;
-                var t_handler = row.handler;
-                var t_start_time = row.start_time;
-                var t_update_time = row.update_time;
-                // 根据order_id 获取 select_id
-                var select_id = "item" + t_goods_id;
-                html += "<tr>" +
-                "<td>" + t_goods_id + "</td>" +
-                "<td>" + t_goods_name + "</td>" +
-                "<td>" + t_kind + "</td>" +
-                "<td>" + t_detail + "</td>" +
-                "<td>" + t_type + "</td>" +
-                "<td>" + t_handler + "</td>" +
-                "<td>" + t_start_time + "</td>" +
-                "<td>" + t_update_time + "</td>" +
-                "<td>" + t_status + "</td>" +
-                "<td>" +
-                    "<select id='" + select_id + "' class='selectpicker'>" +
-                        "<option>采购申请</option>" +
-                        "<option>上架</option>" +
-                        "<option>下架</option>" +
-                        "<option>修改</option>" +
-                        "<option>删除</option>" +
-                    "</select>" +
-                "</td>" +
-                "<td>" +
-                    "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
-                "</td>" +
-                "</tr>";
+            var retCode = jsonObj.code;
+            if (retCode != 0) {
+                alert('修改失败');
+            } else {
+                alert('修改成功');
             }
-            $(html).appendTo("#tableContents:first");//将新数据填充到table
+            var table = $('#purchsTable').DataTable();
+            var select_tr = '#' + tr_id;
+            var idx = table.row($(select_tr)).index();
+            var ret_row = tableData[0];
+            table.cell(idx, 0).data(ret_row.purch_type);
+            table.cell(idx, 1).data(ret_row.purch_id);
+            table.cell(idx, 2).data(ret_row.title);
+            table.cell(idx, 3).data(ret_row.goods_id);
+            table.cell(idx, 4).data(ret_row.goods_name);
+            table.cell(idx, 5).data(ret_row.kind);
+            table.cell(idx, 6).data(ret_row.count);
+            table.cell(idx, 7).data(ret_row.unit_price);
+            table.cell(idx, 8).data(ret_row.amountofmoney);
+            table.cell(idx, 9).data(ret_row.use);
+            table.cell(idx, 10).data(ret_row.process);
+            table.cell(idx, 11).data(ret_row.repertory);
+            table.cell(idx, 12).data(ret_row.proposer);
+            table.cell(idx, 13).data(ret_row.approver);
+            table.cell(idx, 14).data(ret_row.financer);
+            table.cell(idx, 15).data(ret_row.purchaser);
+            table.cell(idx, 16).data(ret_row.start_time);
+            table.cell(idx, 17).data(ret_row.update_time);
+            table.draw(true);
         },
         error: function(data) {
             var jsonObj = JSON.parse(data);
             var msg = jsonObj.msg;
-            alert('[失败]搜索失败: ' + msg);
+            alert('[失败]修改失败: ' + msg);
         }
     });
 }
@@ -364,50 +453,17 @@ function delete_purch(obj) {
             purch_id: m_purch_id,
         },
         success: function (data) {
-            alert('[成功]搜索成功: ' + data);
             // 解析json，然后替换前端
             var jsonObj = JSON.parse(data);
-            var tableData = jsonObj.data;
-            $("#goodsTable tr:gt(0)").remove();//第一行是table的表格头不需清除
-            var html = '';
-            for(var i=0; i < tableData.length; i++){
-                var row = tableData[i];
-                var t_goods_id = row.goods_id;
-                var t_goods_name = row.goods_name;
-                var t_type = row.type;
-                var t_kind = row.kind;
-                var t_detail = row.detail;
-                var t_status = row.status;
-                var t_handler = row.handler;
-                var t_start_time = row.start_time;
-                var t_update_time = row.update_time;
-                // 根据order_id 获取 select_id
-                var select_id = "item" + t_goods_id;
-                html += "<tr>" +
-                "<td>" + t_goods_id + "</td>" +
-                "<td>" + t_goods_name + "</td>" +
-                "<td>" + t_kind + "</td>" +
-                "<td>" + t_detail + "</td>" +
-                "<td>" + t_type + "</td>" +
-                "<td>" + t_handler + "</td>" +
-                "<td>" + t_start_time + "</td>" +
-                "<td>" + t_update_time + "</td>" +
-                "<td>" + t_status + "</td>" +
-                "<td>" +
-                    "<select id='" + select_id + "' class='selectpicker'>" +
-                        "<option>采购申请</option>" +
-                        "<option>上架</option>" +
-                        "<option>下架</option>" +
-                        "<option>修改</option>" +
-                        "<option>删除</option>" +
-                    "</select>" +
-                "</td>" +
-                "<td>" +
-                    "<button type='button' class='btn btn-success' onclick='commit_handle(" + select_id + ")'>提交</button>" +
-                "</td>" +
-                "</tr>";
+            var retCode = jsonObj.code;
+            if (retCode != 0) {
+                alert('删除失败');
+            } else {
+                alert('删除成功');
             }
-            $(html).appendTo("#tableContents:first");//将新数据填充到table
+            var table = $('#purchsTable').DataTable();
+            var select_tr = '#' + tr_id;
+            table.row($(select_tr)).remove().draw(false);
         },
         error: function(data) {
             var jsonObj = JSON.parse(data);

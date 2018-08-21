@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 20:10:54
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-08-19 17:05:11
+ * @Last Modified time: 2018-08-21 20:44:32
  */
 
 namespace app\controllers;
@@ -288,6 +288,12 @@ class PurchController extends Controller
                             'status' => '正常',
                         ],
                     ],
+                    // 新增仓库选择(一般来说只需要返回一次即可)
+                    "reper_info" => [
+                        "1" => "无锡仓库",
+                        "2" => "北京仓库",
+                        "3" => "广州仓库",
+                    ],
                 ];
                 return $this->renderAjax('purch-list', $data);
             } elseif ($request->isPost) {
@@ -323,16 +329,27 @@ class PurchController extends Controller
                 } elseif ($action === 'modify_purch') { // 修改采购单
                     //========需要后期替换数据==============
                     $purch_id = $request->post('purch_id');
+                    // 用于测试“修改过后的数据”
                     $search_test = [
-                        'office_id' => 'B99999',
-                        'office_name' => '桃子',
-                        'kind' => '食品',
-                        'attr' => '消耗品',
-                        'detail' => '生日会准备',
-                        'handler' => '义成',
-                        'start_time' => '2018-07-27 00:00:00',
-                        'update_time' => '2018-07-27 00:00:00',
-                        'status' => '正常'
+                            'purch_type' => '办公设备',
+                            'purch_id' => $purch_id,    // purch_id一定要原样返回
+                            'title' => '修改过后的数据',
+                            'goods_id' => 'D123',
+                            'goods_name' => 'Mac笔记本',
+                            'kind' => '电子设备',
+                            'counts' => 1,
+                            'unit_price' => 10000,
+                            'amountofmoney' => 10000,
+                            'use' => '总经理办公室使用',
+                            'process' => '审批不通过',
+                            'repertory' => '',
+                            'proposer' => '义成',
+                            'approver' => '凯波',
+                            'financer' => '张飞',
+                            'purchaser' => 'dd',
+                            'start_time' => '2018-07-27 00:00:00',
+                            'update_time' => '2018-07-27 00:00:00',
+                            'status' => '正常',
                     ];
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     // 这里需要返回修改后的数据给前端
@@ -347,7 +364,7 @@ class PurchController extends Controller
                     // 此处返回删除的状态即可
                     $ret = [
                         'code' => 0,
-                        'data' => "$office_id" . "$handle",
+                        'data' => "",
                     ];
                     return $ret;
                 } elseif ($action === 'ask_put_in') {   // 请求入库操作
