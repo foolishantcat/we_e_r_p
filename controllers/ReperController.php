@@ -4,7 +4,7 @@
  * @Author: caoyicheng_cd
  * @Date:   2018-07-18 20:15:49
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-07-18 20:18:22
+ * @Last Modified time: 2018-08-28 21:54:50
  */
 
 namespace app\controllers;
@@ -22,15 +22,15 @@ use yii\db\Query;
 
 class ReperController extends Controller
 {
-    //----------测试用-----------------------
-    public function actionOrderInfo()
+    // 仓库信息
+    public function actionReperInfo()
     {
-        return $data = $this->renderAjax('order-info');
+        return $data = $this->renderAjax('reper-info');
     }
 
-    public function actionOrderRank()
+    // 库存信息
+    public function actionSupplyInfo()
     {
-        return $data = $this->renderAjax('order-rank');
+        return $data = $this->renderAjax('supply-info');
     }
-    // ------------------测试用-----------------
 }

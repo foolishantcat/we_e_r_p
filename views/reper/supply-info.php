@@ -2,54 +2,56 @@
 
 /**
  * @Author: caoyicheng_cd
- * @Date:   2018-08-13 21:10:10
+ * @Date:   2018-08-28 21:20:41
  * @Last Modified by:   caoyicheng_cd
- * @Last Modified time: 2018-08-28 20:34:31
+ * @Last Modified time: 2018-08-28 22:36:45
  */
 ?>
 
-<div id="contentPurchs" class="container" style="width: 100%;">
-    <h2>采购列表<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h2>
+<div id="contentSupplys" class="container" style="width: 100%;">
+    <h2>库存信息<span class="glyphicon glyphicon-fire" aria-hidden="true"></span></h2>
     <div class="row">
         <div class="col-md-12">
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#searchPurchs">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#searchSupplys" style="float:left;">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                搜索采购单
+                查询库存
             </button>
+            <p class="text-success" style="float:left;margin-left: 10px;">实时显示搜索结果</p>
         </div>
 
-        <div id="searchPurchs" class="col-md-4 collapse" >
+        <div id="searchSupplys" class="col-md-4 collapse" >
             <!-- 查询交易组框 -->
             <form id="formSearch" class="form-horizontal" role="form">
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">采购类型</span>
-                    <select id="searchKind" class="selectpicker">
-                        <option>商品物料</option>
-                        <option>办公设备</option>
+                    <span class="input-group-addon">选择仓库</span>
+                    <select id="searchReper" class="selectpicker">
+                        <?php
+                            foreach ($reper_info as $key => $value) {
+                                echo "<option>$value</option>";
+                            }
+                        ?>
                     </select>
                 </div>
                 <div class="input-group input-group-sm">
-                    <span class="input-group-addon">采购单号</span>
-                    <input id="purchId" type="text" class="form-control" placeholder="填写采购单号">
+                    <span class="input-group-addon">商品分类</span>
+                    <select id="searchKind" class="selectpicker">
+                        <?php
+                            foreach ($kind as $key => $value) {
+                                echo "<option>$value</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">商品名称</span>
+                    <input id="goddsName" type="text" class="form-control" placeholder="填写商品名称">
                 </div>
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">商品编号</span>
                     <input id="goodsId" type="text" class="form-control">
                 </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">商品名称</span>
-                    <input id="goodsName" type="text" class="form-control">
-                </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">商品类型</span>
-                    <input id="goodsKind" type="text" class="form-control">
-                </div>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-addon">操作员</span>
-                    <input id="handler" type="text" class="form-control" placeholder="填写中文名">
-                </div>
                 <div>
-                    <button id="btSearchPurchs" class="btn btn-success" type="button" onclick="search_purchs(formSearch.searchKind, formSearch.purchId, formSearch.goodsId,formSearch.goodsName, formSearch.goodsKind, formSearch.handler)">
+                    <button id="btSearchPurchs" class="btn btn-success" type="button" onclick="search_purchs(formSearch.searchReper, formSearch.searchKind, formSearch.goddsName,formSearch.goodsId)">
                         搜一下
                     </button>
                 </div>
@@ -58,27 +60,18 @@
     </div>
 
     <!-- 展示信息用的表格 -->
-    <table id="purchsTable" class="table table-bordered table-striped" style="width: 100%;">
+    <table id="repersTable" class="table table-bordered table-striped" style="width: 100%;">
         <thead>
         <tr>
-            <th>采购类型</th>
-            <th>采购单号</th>
-            <th>标题</th>
-            <th>商品编号</th>
-            <th>商品名称</th>
-            <th>商品类型</th>
-            <th>数量</th>
-            <th>单价</th>
-            <th>金额</th>
-            <th>用途</th>
-            <th>采购状态</th>
-            <th>所在仓库</th>
-            <th>申请人</th>
-            <th>审批人</th>
-            <th>财务</th>
-            <th>采购员</th>
-            <th>开始时间</th>
-            <th>更新时间</th>
+            <th>仓库编号</th>
+            <th>仓库名</th>
+            <th>负责人</th>
+            <th>电话</th>
+            <th>工作时间</th>
+            <th>状态</th>
+            <th>地址</th>
+            <th>值班人</th>
+            <th>电话</th>
             <th>操作</th>
         </tr>
         </thead>
@@ -87,30 +80,21 @@
                 foreach ($purch_info as $row) {
                     $purch_id = $row['purch_id'];
                     echo "<tr id='mtr$purch_id'>";
-                    echo "<td>" . $row['purch_type'] . "</td>";
-                    echo "<td>" . $row['purch_id'] . "</td>";
-                    echo "<td>" . $row['title'] . "</td>";
-                    echo "<td>" . $row['goods_id'] . "</td>";
-                    echo "<td>" . $row['goods_name'] . "</td>";
-                    echo "<td>" . $row['kind'] . "</td>";
-                    echo "<td>" . $row['counts'] ."</td>";
-                    echo "<td>" . $row['unit_price'] . "</td>";
-                    echo "<td>" . $row['amountofmoney'] . "</td>";
-                    echo "<td>" . $row['use'] . "</td>";
-                    echo "<td>" . $row['process'] . "</td>";
-                    echo "<td>" . $row['repertory'] . "</td>";
-                    echo "<td>" . $row['proposer'] . "</td>";
-                    echo "<td>" . $row['approver'] . "</td>";
-                    echo "<td>" . $row['financer'] . "</td>";
-                    echo "<td>" . $row['purchaser'] . "</td>";
-                    echo "<td>" . $row['start_time'] . "</td>";
-                    echo "<td>" . $row['update_time'] . "</td>";
+                    echo "<td>" . $row['reper_id'] . "</td>";
+                    echo "<td>" . $row['reper_name'] . "</td>";
+                    echo "<td>" . $row['manager'] . "</td>";
+                    echo "<td>" . $row['mgr_phone'] . "</td>";
+                    echo "<td>" . $row['work_time'] . "</td>";
+                    echo "<td>" . $row['reper_status'] . "</td>";
+                    echo "<td>" . $row['address'] ."</td>";
+                    echo "<td>" . $row['watcher'] . "</td>";
+                    echo "<td>" . $row['watcher_phone'] . "</td>";
                     echo "<td>";
                     echo "<form class='form-horizontal'>";
                     echo "<div class='contorl-group' style='white-space:nowrap'>";
-                    echo "<span id='modifybt$purch_id' class='spanbt glyphicon glyphicon-edit' data-toggle='tooltip' aria-hidden='true' style='margin:5px;}' onclick='modify_process(this)' title='修改'></span>";
-                    echo "<span id='deletebt$purch_id' class='spanbt glyphicon glyphicon-remove' data-toggle='tooltip' aria-hidden='true' style='margin:5px;' onclick='delete_purch(this)' title='删除'></span>";
-                    echo "<span id='nextbt$purch_id' class='spanbt glyphicon glyphicon-send' data-toggle='tooltip' aria-hidden='true' style='margin:5px;' onclick='next_process(this)' title='流转'></span>";
+                    echo "<span id='modifybt$reper_id' class='spanbt glyphicon glyphicon-edit' data-toggle='tooltip' aria-hidden='true' style='margin:5px;}' onclick='modify_process(this)' title='修改'></span>";
+                    echo "<span id='deletebt$reper_id' class='spanbt glyphicon glyphicon-remove' data-toggle='tooltip' aria-hidden='true' style='margin:5px;' onclick='delete_reper(this)' title='删除'></span>";
+                    echo "<span id='detailbt$reper_id' class='spanbt glyphicon glyphicon-send' data-toggle='tooltip' aria-hidden='true' style='margin:5px;' onclick='show_detail(this)' title='详情'></span>";
                     echo "</div>";
                     echo "</form>";
                     echo "</td>";
@@ -120,90 +104,12 @@
         </tbody>
     </table>
 
-    <div class="modal fade" id="nextProcess">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- 模态框头部 -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">采购单流转</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <!-- 模态框主体 -->
-                    <div class="modal-body">
-                        <div class="alert alert-primary" role="alert">
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label for="title" class="col-sm-2 control-label">标题*</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="title" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="purchId" class="col-sm-2 control-label">采购单ID*</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="purchId" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="goodsId" class="col-sm-2 control-label">商品ID*</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsId" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="goodsName" class="col-sm-2 control-label">商品名称*</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsName" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="goodsCount" class="col-sm-2 control-label">商品数量*</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodsCount" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="amountOfMoney" class="col-sm-2 control-label">商品总价</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="amountOfMoney" disabled="disabled">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="putInTime" class="col-sm-2 control-label">仓库选择</label>
-                                    <div class="col-sm-10">
-                                        <select id='reperSelect' class='selectpicker'>
-                                        <?php
-                                            foreach ($reper_info as $key => $value) {
-                                                echo "<option>$value</option>";
-                                            }
-                                        ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="putInTime" class="col-sm-2 control-label">入库时间</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="putInTime">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- 模态框底部 -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ask_put_in()">申请入库</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modifyProcess">
+    <div class="modal fade" id="newReper">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- 模态框头部 -->
                 <div class="modal-header">
-                    <h4 class="modal-title">修改采购单</h4>
+                    <h4 class="modal-title">新建仓库</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <!-- 模态框主体 -->
@@ -211,47 +117,29 @@
                     <div class="alert alert-primary" role="alert">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label for="title" class="col-sm-2 control-label">标题*</label>
+                                <label for="reperName" class="col-sm-2 control-label">仓库名*</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="title" disabled="disabled">
+                                    <input type="text" class="form-control" id="reperName">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="purchId" class="col-sm-2 control-label">采购单ID*</label>
+                                <label for="reperMgr" class="col-sm-2 control-label">负责人*</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="purchId" disabled="disabled">
+                                    <input type="text" class="form-control" id="reperMgr">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="goodsId" class="col-sm-2 control-label">商品ID*</label>
+                                <label for="workTime" class="col-sm-2 control-label">工作时间*</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="goodsId" disabled="disabled">
+                                    <input type="text" class="form-control" id="workTime">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="goodsName" class="col-sm-2 control-label">商品名称*</label>
+                                <label for="status" class="col-sm-2 control-label">状态*</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="goodsName" disabled="disabled">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="goodsCount" class="col-sm-2 control-label">商品数量*</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="goodsCount">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="amountOfMoney" class="col-sm-2 control-label">商品总价</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="amountOfMoney">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="putInTime" class="col-sm-2 control-label">仓库选择</label>
-                                <div class="col-sm-10">
-                                    <select id='reperSelect' class='selectpicker'>
+                                    <select id='statusSelect' class='selectpicker'>
                                     <?php
-                                        foreach ($reper_info as $key => $value) {
+                                        foreach ($status_info as $key => $value) {
                                             echo "<option>$value</option>";
                                         }
                                     ?>
@@ -259,9 +147,21 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="putInTime" class="col-sm-2 control-label">入库时间</label>
+                                <label for="address" class="col-sm-2 control-label">地址*</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="putInTime">
+                                    <input type="text" class="form-control" id="address">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="watcher" class="col-sm-2 control-label">值班人</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="watcher">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="watcherPhone" class="col-sm-2 control-label">电话</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="watcherPhone">
                                 </div>
                             </div>
                         </form>
@@ -270,7 +170,154 @@
                 <!-- 模态框底部 -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="modify_purch()">修改订单</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="new_reper()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="alertReper">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">修改仓库</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <div class="alert alert-primary" role="alert">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="reperName" class="col-sm-2 control-label">仓库名*</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="reperName" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="wOutOrder" class="col-sm-2 control-label">本周出库单数</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="reperMgr" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="wOutOrder" class="col-sm-2 control-label">本周出库单数</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="reperMgr" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mgrPhone" class="col-sm-2 control-label">负责人电话*</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="mgrPhone" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="workTime" class="col-sm-2 control-label">工作时间</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="workTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="watcher" class="col-sm-2 control-label">值班人</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="watcher">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="watcherPhone" class="col-sm-2 control-label">值班人电话</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="watcherPhone">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="status" class="col-sm-2 control-label">仓库状态*</label>
+                                <div class="col-sm-10">
+                                    <select id='statusSelect' class='selectpicker'>
+                                    <?php
+                                        foreach ($status_info as $key => $value) {
+                                            echo "<option>$value</option>";
+                                        }
+                                    ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="col-sm-2 control-label">地址*</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="address" disabled="disabled">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" alert_reper()">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reperDetail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">仓库详情</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row clearfix">
+                            <div class="col-md-6 column">
+                                <div class="form-group">
+                                    <label for="dOutOrders" class="col-sm-2 control-label">今日出库单数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="dOutOrders" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wOutOrders" class="col-sm-2 control-label">本周出库单数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="wOutOrders" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mOutOrders" class="col-sm-2 control-label">当月出库单数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="mOutOrders" disabled="disabled">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 column">
+                                <div class="form-group">
+                                    <label for="dInOrders" class="col-sm-2 control-label">今日入库单数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="dInOrders" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="wInOrders" class="col-sm-2 control-label">本周入库单数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="wInOrders" disabled="disabled">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mInOrders" class="col-sm-2 control-label">当月入库单数</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="mInOrders" disabled="disabled">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
